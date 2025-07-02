@@ -1,0 +1,115 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router";
+
+
+import SignIn from "./pages/AuthPages/SignIn";
+import SignUp from "./pages/AuthPages/SignUp";
+
+import NotFound from "./pages/OtherPage/NotFound";
+import Videos from "./pages/UiElements/Videos";
+import Images from "./pages/UiElements/Images";
+import Alerts from "./pages/UiElements/Alerts";
+import Badges from "./pages/UiElements/Badges";
+import Avatars from "./pages/UiElements/Avatars";
+import Buttons from "./pages/UiElements/Buttons";
+import LineChart from "./pages/Charts/LineChart";
+import BarChart from "./pages/Charts/BarChart";
+import BasicTables from "./pages/Tables/BasicTables";
+import FormElements from "./pages/Forms/FormElements";
+import Blank from "./pages/Blank";
+import AppLayout from "./layout/AppLayout";
+import { ScrollToTop } from "./components/common/ScrollToTop";
+// import Home from "./pages/Dashboard/Home";
+
+import ProtectedRoute from "./routes/ProtectedRoute";
+import SuperAdminDashboard from './pages/Dashboard/SuperAdminDashboard';
+import AdminDashboard from "./pages/Dashboard/AdminDashboard";
+import TeacherDashboard from "./pages/Dashboard/TeacherDashboard";
+import StudentDashboard from "./pages/Dashboard/StudentDashboard";
+import ParentDashboard from "./pages/Dashboard/ParentDashboard";
+import Calendar from "./pages/Calendar";
+import UserProfiles from "./pages/UserProfiles";
+import Student from "./pages/Student/Student";
+import AddStudent from "./pages/Student/AddStudent";
+
+export default function App() {
+  return (
+    <>
+      <Router>
+        <ScrollToTop />
+        <Routes>
+
+          <Route index element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route element={<AppLayout />}>
+            <Route 
+              path="/dashboard/superadmin"
+              element={
+                <ProtectedRoute allowedRoles={["superadmin"]}>
+                  <SuperAdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/admin"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/teacher"
+              element={
+                <ProtectedRoute allowedRoles={["teacher"]}>
+                  <TeacherDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/student"
+              element={
+                <ProtectedRoute allowedRoles={["student"]}>
+                  <StudentDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/parent"
+              element={
+                <ProtectedRoute allowedRoles={["parent"]}>
+                  <ParentDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* <Route path="/dashboard" element={<Home />} /> */}
+
+            <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/student" element={<Student />} />
+            <Route path="/add-student" element={<AddStudent />} />
+
+
+
+            <Route path="/blank" element={<Blank />} />
+            <Route path="/form-elements" element={<FormElements />} />
+            <Route path="/basic-tables" element={<BasicTables />} />
+            <Route path="/alerts" element={<Alerts />} />
+            <Route path="/avatars" element={<Avatars />} />
+            <Route path="/badge" element={<Badges />} />
+            <Route path="/buttons" element={<Buttons />} />
+            <Route path="/images" element={<Images />} />
+            <Route path="/videos" element={<Videos />} />
+            <Route path="/line-chart" element={<LineChart />} />
+            <Route path="/bar-chart" element={<BarChart />} />
+          </Route>
+
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </>
+  );
+}
