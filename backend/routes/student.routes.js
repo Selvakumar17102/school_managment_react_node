@@ -4,5 +4,6 @@ const studentController = require("../controllers/student.controller");
 const upload = require("../middleware/upload");
 
 router.post("/students", upload.single("photo"), studentController.createStudent);
+router.get("/studentslist", studentController.studentList);
 
 module.exports = router;

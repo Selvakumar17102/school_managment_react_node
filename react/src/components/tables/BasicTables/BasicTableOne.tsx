@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useEffect,useState, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -25,42 +25,51 @@ interface Order {
   user: {
     image: string;
     name: string;
-    role: string;
+    role: number;
   };
   email: string;
   status: string;
 }
 
 
-const tableData: Order[] = [
-  {
-    id: 1,
-    user: {
-      image: "/images/user/user-17.jpg",
-      name: "Lindsey Curtis",
-      role: "Web Designer",
-    },
-    email: "Agency Website",
-    status: "Active",
-  }
-];
-
-
-
-
-type SortColumn = "user" | "projectName" | "status" | "budget" | null;
-type SortDirection = "asc" | "desc";
-
 export default function BasicTableOne() {
+  const [tableData, setTableData] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/studentslist");
+        const data = await response.json();
+
+        console.log(data);
+      
+        const formattedData: Order[] = data.map((student: any) => ({
+          id: student.id,
+          user: {
+            image: student.photo,
+            name: student.name,
+            role: `Class : ${student.className} || Sec : ${student.section},`,
+          },
+          email: student.email,
+          status: student.status,
+        }));
+
+        // console.log(formattedData);
+
+        setTableData(formattedData);
+      } catch (error) {
+        console.error("Error fetching students:", error);
+      }
+    };
+
+    fetchStudents();
+  });
+
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 2;
+  const rowsPerPage = 5;
 
   const [searchQuery, setSearchQuery] = useState("");
-
-  const [sortColumn, setSortColumn] = useState<SortColumn>(null);
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-
   const filteredData = useMemo(() => {
     if (!searchQuery) return tableData;
 
@@ -73,58 +82,20 @@ export default function BasicTableOne() {
         order.status.toLowerCase().includes(lowerQuery)
       );
     });
-  }, [searchQuery]);
+  }, [searchQuery, tableData]);
 
-  const sortedData = useMemo(() => {
-    if (!sortColumn) return filteredData;
 
-    return [...filteredData].sort((a, b) => {
-      let aVal: string = "";
-      let bVal: string = "";
-
-      switch (sortColumn) {
-        case "user":
-          aVal = a.user.name.toLowerCase();
-          bVal = b.user.name.toLowerCase();
-          break;
-        case "status":
-          aVal = a.status.toLowerCase();
-          bVal = b.status.toLowerCase();
-          break;
-      }
-
-      if (aVal < bVal) return sortDirection === "asc" ? -1 : 1;
-      if (aVal > bVal) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-  }, [filteredData, sortColumn, sortDirection]);
-
-  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
-  const pagedData = sortedData.slice(
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const pagedData = filteredData.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
-
-  // Sorting handler for column header click
-  const handleSort = (column: SortColumn) => {
-    if (sortColumn === column) {
-      // toggle direction
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortColumn(column);
-      setSortDirection("asc");
-    }
-  };
-
-
-  // Exports
-
-  // Export Excel
+  
   const exportExcel = () => {
-    const dataForExcel = sortedData.map((order, index) => ({
+    const dataForExcel = filteredData.map((order, index) => ({
       "S.No": index + 1,
       User: order.user.name,
-      "Email": order.email,
+      Email: order.email,
       Status: order.status,
     }));
 
@@ -134,24 +105,22 @@ export default function BasicTableOne() {
     XLSX.writeFile(workbook, "students.xlsx");
   };
 
-  // Export PDF
   const exportPDF = () => {
-    const doc = new jsPDF();
+  const doc = new jsPDF();
+  const tableColumn = ["S.No", "User", "Project Name", "Status", "Budget"];
+  const tableRows: (string | number)[][] = [];
 
-    const tableColumn = ["S.No", "User", "Project Name", "Status", "Budget"];
-    const tableRows: (string | number)[][] = [];
+  filteredData.forEach((order, index) => {
+    const row = [
+      index + 1,
+      order.user.name,
+      order.email,
+      order.status,
+    ];
+    tableRows.push(row);
+  });
 
-    sortedData.forEach((order, index) => {
-      const row = [
-        index + 1,
-        order.user.name,
-        order.email,
-        order.status,
-      ];
-      tableRows.push(row);
-    });
-
-    doc.autoTable({
+  doc.autoTable({
       head: [tableColumn],
       body: tableRows,
       startY: 20,
@@ -160,10 +129,9 @@ export default function BasicTableOne() {
     doc.save("student.pdf");
   };
 
-  // Copy to clipboard
   const copyToClipboard = () => {
     let copyText = "S.No\tUser\tProject Name\tStatus\tBudget\n";
-    sortedData.forEach((order, index) => {
+    filteredData.forEach((order, index) => {
       copyText += `${index + 1}\t${order.user.name}\t${order.email}\t${order.status}\n`;
     });
 
@@ -171,7 +139,6 @@ export default function BasicTableOne() {
     alert("Table copied to clipboard!");
   };
 
-  // Print
   const printTable = () => {
     const printContent = document.getElementById("printable-table")?.outerHTML;
     if (!printContent) return;
@@ -198,7 +165,10 @@ export default function BasicTableOne() {
 
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, sortColumn, sortDirection]);
+  }, [searchQuery]);
+
+
+  
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] p-4">
@@ -245,30 +215,20 @@ export default function BasicTableOne() {
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                 S/No
               </TableCell>
-              <TableCell isHeader 
-                onClick={() => handleSort("user")} 
-                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none ${
-                  sortColumn === "user" ? "underline" : ""
-                }`}
-              >
-                User {sortColumn === "user" ? (sortDirection === "asc" ? "▲" : "▼") : ""}
+              <TableCell isHeader
+                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
+                User
               </TableCell>
               <TableCell isHeader
-                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}
-              >
+                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
                 Email
               </TableCell>
               <TableCell isHeader
-                onClick={() => handleSort("status")}
-                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none ${
-                  sortColumn === "status" ? "underline" : ""
-                }`}
-              >
-                Status {sortColumn === "status" ? (sortDirection === "asc" ? "▲" : "▼") : ""}
+                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
+                Status
               </TableCell>
               <TableCell isHeader
-                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none `}
-              >
+                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none `}>
                 Action
               </TableCell>
             </TableRow>
@@ -283,19 +243,21 @@ export default function BasicTableOne() {
                 </TableCell>
               </TableRow>
             ) : (
+              
               pagedData.map((order,index) => (
+                
                 <TableRow key={order.id}>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {(currentPage - 1) * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell className="px-5 py-4 sm:px-6 text-start">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 overflow-hidden rounded-full">
+                    
+                      <div  className="w-10 h-10 overflow-hidden rounded-full">
                         <img
                           width={40}
                           height={40}
-                          src={order.user.image}
-                          alt={order.user.name}
+                          src={order.user.image} alt="test"
                         />
                       </div>
                       <div>
@@ -326,7 +288,7 @@ export default function BasicTableOne() {
                     </Badge>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    {order.budget}
+                    21213
                   </TableCell>
                 </TableRow>
               ))
