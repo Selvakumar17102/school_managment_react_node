@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const db = require('./models');
 const userRoutes = require('./routes/user.routes');
 const studentRoutes = require("./routes/student.routes");
+const parentRoutes = require("./routes/parent.routes");
 const path = require("path");
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.json());
 // Routes
 app.use('/api', userRoutes);
 app.use('/api', studentRoutes);
+app.use('/api', parentRoutes);
 
 // Test DB and Sync Models
 db.sequelize.sync({ alter: true }).then(() => {

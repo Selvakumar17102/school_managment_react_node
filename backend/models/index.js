@@ -16,13 +16,17 @@ const sequelize = require('../config/db');
 const Sequelize = require('sequelize'); // You need Sequelize for DataTypes
 const db = {};
 
+db.sequelize = sequelize;
+db.sequelize = sequelize;
+
 const User = require('./user.model');
 const Student = require('./student.model')(sequelize, Sequelize.DataTypes);
+const Parent = require('./parent.model')(sequelize, Sequelize.DataTypes);
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;  // export Sequelize if needed
+
 db.User = User;
 db.Student = Student;
+db.Parent = Parent;
 
 module.exports = db;
 

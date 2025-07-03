@@ -28,8 +28,16 @@ import StudentDashboard from "./pages/Dashboard/StudentDashboard";
 import ParentDashboard from "./pages/Dashboard/ParentDashboard";
 import Calendar from "./pages/Calendar";
 import UserProfiles from "./pages/UserProfiles";
+
 import Student from "./pages/Student/Student";
 import AddStudent from "./pages/Student/AddStudent";
+import ViewStudent from "./pages/Student/ViewStudent";
+import EditStudent from "./pages/Student/EditStudent";
+
+import Parent from "./pages/Parent/Parent";
+import AddParent from "./pages/Parent/AddParent";
+import ViewParent from "./pages/Parent/ViewParent";
+import EditParent from "./pages/Parent/EditParent";
 
 export default function App() {
   return (
@@ -86,9 +94,16 @@ export default function App() {
 
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
+
             <Route path="/student" element={<Student />} />
             <Route path="/add-student" element={<AddStudent />} />
+            <Route path="/student/:id" element={<ViewStudent />} />
+            <Route path="/editstudent/:id" element={<EditStudent />} />
 
+            <Route path="/parent" element={<Parent />} />
+            <Route path="/add-parent" element={<AddParent />} />
+            <Route path="/viewparent/:id" element={<ViewParent />} />
+            <Route path="/editparent/:id" element={<EditParent />} />
 
 
             <Route path="/blank" element={<Blank />} />

@@ -49,3 +49,39 @@ exports.studentList = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch student list" });
   }
 };
+
+
+exports.getStudentById = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+
+    const student = await Student.findByPk(studentId);
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    res.json(student);
+
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+};
+
+
+exports.updateStudent = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const student = await Student.findByPk(studentId);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    await student.update(req.body);
+    res.json({ message: "Student updated successfully", student });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update student", details: error.message });
+  }
+};

@@ -47,6 +47,11 @@ const navItems: NavItem[] = [
     name: "Student",
     path: "/student",
   },
+  {
+    icon: <GroupIcon />,
+    name: "Parent",
+    path: "/parent",
+  },
   
   {
     name: "Forms",

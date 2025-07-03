@@ -28,45 +28,43 @@ interface Order {
   user: {
     image: string;
     name: string;
-    role: number;
   };
   email: string;
 }
 
 
-export default function BasicTableOne() {
+export default function BasicTableTwo() {
 
   const navigate = useNavigate();
 
   const [tableData, setTableData] = useState<Order[]>([]);
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchParents = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/studentslist");
+        const response = await fetch("http://localhost:5000/api/parentslist");
         const data = await response.json();
 
-        // console.log(data);
+        console.log(data);
+
       
-        const formattedData: Order[] = data.map((student: any) => ({
-          id: student.id,
+        const formattedData: Order[] = data.map((parent: any) => ({
+          id: parent.id,
           user: {
-            image: student.photo,
-            name: student.name,
-            role: `Class : ${student.className} || Sec : ${student.section},`,
+            image: parent.photo,
+            name: parent.guardianName,
           },
-          email: student.email,
+          email: parent.email,
         }));
 
-        // console.log(formattedData);
 
         setTableData(formattedData);
       } catch (error) {
-        console.error("Error fetching students:", error);
+        console.error("Error fetching parents:", error);
       }
     };
 
-    fetchStudents();
+    fetchParents();
   });
 
 
@@ -104,7 +102,7 @@ export default function BasicTableOne() {
     const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
-    XLSX.writeFile(workbook, "students.xlsx");
+    XLSX.writeFile(workbook, "parent.xlsx");
   };
 
   const exportPDF = () => {
@@ -126,8 +124,8 @@ export default function BasicTableOne() {
       body: tableRows,
       startY: 20,
     });
-    doc.text("Order Table", 14, 15);
-    doc.save("student.pdf");
+    doc.text("parent Table", 14, 15);
+    doc.save("parent.pdf");
   };
 
   const copyToClipboard = () => {
@@ -169,9 +167,6 @@ export default function BasicTableOne() {
   }, [searchQuery]);
 
 
-  // const handleEdit = (order: any) => {
-  //   console.log("Edit:", order);
-  // };
 
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this record?")) {
@@ -270,9 +265,6 @@ export default function BasicTableOne() {
                         <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
                           {order.user.name}
                         </span>
-                        <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                          {order.user.role}
-                        </span>
                       </div>
                     </div>
                   </TableCell>
@@ -281,10 +273,10 @@ export default function BasicTableOne() {
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     <div className="flex gap-3 items-center">
-                      <button onClick={() => navigate(`/student/${order.id}`)} title="View">
+                      <button onClick={() => navigate(`/viewparent/${order.id}`)} title="View">
                         <Eye className="w-5 h-5 text-blue-500 hover:text-blue-700" />
                       </button>
-                      <button onClick={() => navigate(`/editstudent/${order.id}`)} title="Edit">
+                      <button onClick={() => navigate(`/editparent/${order.id}`)} title="Edit">
                         <Pencil className="w-5 h-5 text-green-500 hover:text-green-700" />
                       </button>
                       <button onClick={() => handleDelete(order.id)} title="Delete">
