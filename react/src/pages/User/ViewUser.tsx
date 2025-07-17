@@ -3,24 +3,24 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-export default function ViewParent() {
-
-  const { id } = useParams();
+export default function ViewUser() {
   const navigate = useNavigate();
 
-  const [parent, setParent] = useState<any>(null);
+  const { id } = useParams();
+
+  const [user, setUser] = useState<any>(null);
     const [activeTab, setActiveTab] = useState("Profile");
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/parents/${id}`)
-      .then(res => setParent(res.data))
+    axios.get(`http://localhost:5000/api/users/${id}`)
+      .then(res => setUser(res.data))
       .catch(err => console.error(err));
   }, [id]);
 
-  if (!parent) return <p>Loading...</p>;
+  if (!user) return <p>Loading...</p>;
 
 
-const tabs = ["Profile", "children", "Document"];
+const tabs = ["Profile", "Attendance", "Document"];
 
   return (
     <div className="p-4">
@@ -28,24 +28,30 @@ const tabs = ["Profile", "children", "Document"];
         <div>
           <button className="btn bg-red-500 text-white mr-2">Print</button>
           <button className="btn bg-red-500 text-white mr-2">PDF Preview</button>
-          <button onClick={() => navigate(`/editparent/${parent.id}`)} className="btn bg-orange-500 text-white mr-2">Edit</button>
+          <button onClick={() => navigate(`/edituser/${user.id}`)} className="btn bg-orange-500 text-white mr-2">Edit</button>
         </div>
         <div>
-          <span>Dashboard / Parent / View</span>
+          <span>Dashboard / User / View</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white shadow rounded p-4 text-center">
           <img
-            src={`http://localhost:5000/uploads/${parent.photo}`}
-            alt={parent.guardianName}
+            src={`http://localhost:5000/uploads/${user.photo}`}
+            alt={user.name}
             className="w-24 h-24 rounded-full mx-auto mb-2"
           />
-          <h2 className="text-xl font-semibold">{parent.guardianName}</h2>
-          <p>Parent</p>
+          <h2 className="text-xl font-semibold">{user.name}</h2>
+          <p>{user.role}</p>
           <div className="mt-4 space-y-1 text-left">
-            <p><strong>Phone :</strong> {parent.phone}</p>
+            <p><strong>Gender:</strong> {user.gender}</p>
+          </div>
+          <div className="mt-4 space-y-1 text-left">
+            <p><strong>Date Of Birth:</strong> {user.dob}</p>
+          </div>
+          <div className="mt-4 space-y-1 text-left">
+            <p><strong>Phone:</strong> {user.phone}</p>
           </div>
         </div>
 
@@ -68,19 +74,16 @@ const tabs = ["Profile", "children", "Document"];
             </ul>
             {activeTab === "Profile" && (
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                <p><strong>Father's Name:</strong> {parent.fatherName}</p>
-                <p><strong>Mother's Name:</strong> {parent.motherName}</p>
-                <p><strong>Father's Profession:</strong> {parent.fatherProfession}</p>
-                <p><strong>Mother's Profession:</strong> {parent.motherProfession}</p>
-                <p><strong>Email:</strong> {parent.email}</p>
-                <p><strong>Phone:</strong> {parent.phone}</p>
-                <p><strong>Address:</strong> {parent.address}</p>
-                <p><strong>Username:</strong> {parent.username}</p>
+                <p><strong>Joinning Date:</strong> {user.joiningDate}</p>
+                <p><strong>Religion:</strong> {user.religion}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <p><strong>Username:</strong> {user.username}</p>
+                <p><strong>Address:</strong> {user.address}</p>
                 </div>
             )}
 
-            {activeTab === "children" && (
-                <div>children Information Coming Soon...</div>
+            {activeTab === "Attendance" && (
+                <div>Attendance Content Here...</div>
             )}
 
             {activeTab === "Document" && (

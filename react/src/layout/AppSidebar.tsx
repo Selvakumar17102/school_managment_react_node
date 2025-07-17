@@ -52,6 +52,59 @@ const navItems: NavItem[] = [
     name: "Parent",
     path: "/parent",
   },
+  {
+    icon: <GroupIcon />,
+    name: "Teacher",
+    path: "/teacher",
+  },
+  {
+    icon: <GroupIcon />,
+    name: "Users",
+    path: "/user",
+  },
+
+  {
+    name: "Academic",
+    icon: <ListIcon />,
+    subItems: [{ name: "Class", path: "/classes", pro: false },
+      { name: "Section", path: "/section", pro: false },
+      { name: "Subject", path: "/subject", pro: false },
+      { name: "Syllabus", path: "/syllabus", pro: false },
+      { name: "Assignment", path: "/assignment", pro: false },
+      { name: "Routine", path: "/routine", pro: false },
+    ],
+  },
+
+  {
+    name: "Attendance",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Student Attendance", path: "/sattendance", pro: false },
+      { name: "Teacher Attendance", path: "/tattendance", pro: false },
+      { name: "User Attendance", path: "/uattendance", pro: false },
+    ],
+  },
+
+  {
+    name: "Exam",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Exam", path: "/exam", pro: false },
+      { name: "Exam Schedule", path: "/examschedule", pro: false },
+      { name: "Grade", path: "/grade", pro: false },
+      { name: "Exam Attendance", path: "/eattendance", pro: false },
+    ],
+  },
+
+  {
+    name: "Mark",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Mark", path: "/mark", pro: false },
+      { name: "Mark Distribution", path: "/markpercentage", pro: false },
+      { name: "Promotion", path: "/promotion", pro: false },
+    ],
+  },
   
   {
     name: "Forms",

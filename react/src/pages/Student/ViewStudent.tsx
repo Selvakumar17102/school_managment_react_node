@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -6,6 +6,7 @@ import axios from 'axios';
 export default function ViewStudent() {
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [student, setStudent] = useState<any>(null);
     const [activeTab, setActiveTab] = useState("Profile");
@@ -27,7 +28,7 @@ const tabs = ["Profile", "Parents", "Routine", "Attendance", "Mark", "Invoice", 
         <div>
           <button className="btn bg-red-500 text-white mr-2">Print</button>
           <button className="btn bg-red-500 text-white mr-2">PDF Preview</button>
-          <button className="btn bg-orange-500 text-white mr-2">Edit</button>
+          <button onClick={() => navigate(`/editstudent/${student.id}`)} className="btn bg-orange-500 text-white mr-2">Edit</button>
         </div>
         <div>
           <span>Dashboard / Student / View</span>

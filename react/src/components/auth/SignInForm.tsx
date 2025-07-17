@@ -22,11 +22,11 @@ export default function SignInForm() {
   // ✅ Redirect to dashboard if already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userdata = JSON.parse(localStorage.getItem("user") || "{}");
 
-    if (token && user?.role) {
+    if (token && userdata?.role) {
       // Redirect based on role
-      switch (user.role) {
+      switch (userdata.role) {
         case "superadmin":
           navigate("/dashboard/superadmin");
           break;
@@ -75,7 +75,6 @@ export default function SignInForm() {
         email,
         password,
       });
-      console.log(res.data);
 
       const { token, user } = res.data;
 
@@ -194,14 +193,16 @@ export default function SignInForm() {
                   <Label>
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input 
+                  <Input
+                    id="email"
+                    name="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     className={errors.email ? "border-red-500" : ""}
-                    
                   />
+
                   {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                 </div>
                 <div>
@@ -210,12 +211,15 @@ export default function SignInForm() {
                   </Label>
                   <div className="relative">
                     <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       className={errors.password ? "border-red-500" : ""}
                     />
+
                     <span
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"

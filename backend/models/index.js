@@ -22,11 +22,15 @@ db.sequelize = sequelize;
 const User = require('./user.model');
 const Student = require('./student.model')(sequelize, Sequelize.DataTypes);
 const Parent = require('./parent.model')(sequelize, Sequelize.DataTypes);
+const Teacher = require('./teacher.model')(sequelize, Sequelize.DataTypes);
+const MasterRole = require('./masterrole.model')(sequelize, Sequelize.DataTypes);
 
 
 db.User = User;
 db.Student = Student;
 db.Parent = Parent;
+db.Teacher = Teacher;
+db.MasterRole = MasterRole;
 
 module.exports = db;
 

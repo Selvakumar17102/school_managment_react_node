@@ -39,6 +39,16 @@ import AddParent from "./pages/Parent/AddParent";
 import ViewParent from "./pages/Parent/ViewParent";
 import EditParent from "./pages/Parent/EditParent";
 
+import Teacher from "./pages/Teacher/Teacher";
+import AddTeacher from "./pages/Teacher/AddTeacher";
+import ViewTeacher from "./pages/Teacher/ViewTeacher";
+import EditTeacher from "./pages/Teacher/EditTeacher";
+
+import User from "./pages/User/User";
+import AddUser from "./pages/User/AddUser";
+import ViewUser from "./pages/User/ViewUser";
+import EditUser from "./pages/User/EditUser";
+
 export default function App() {
   return (
     <>
@@ -104,6 +114,16 @@ export default function App() {
             <Route path="/add-parent" element={<AddParent />} />
             <Route path="/viewparent/:id" element={<ViewParent />} />
             <Route path="/editparent/:id" element={<EditParent />} />
+
+            <Route path="/teacher" element={<Teacher />} />
+            <Route path="/add-teacher" element={<AddTeacher />} />
+            <Route path="/viewteacher/:id" element={<ViewTeacher />} />
+            <Route path="/editteacher/:id" element={<EditTeacher />} />
+
+            <Route path="/user" element={<User />} />
+            <Route path="/add-user" element={<AddUser />} />
+            <Route path="/viewuser/:id" element={<ViewUser />} />
+            <Route path="/edituser/:id" element={<EditUser />} />
 
 
             <Route path="/blank" element={<Blank />} />
