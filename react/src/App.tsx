@@ -49,6 +49,21 @@ import AddUser from "./pages/User/AddUser";
 import ViewUser from "./pages/User/ViewUser";
 import EditUser from "./pages/User/EditUser";
 
+import Classes from "./pages/Academic/Classes";
+import AddClasses from "./pages/Academic/AddClasses";
+
+import Section from "./pages/Academic/Section";
+import AddSection from "./pages/Academic/AddSection";
+
+import Subject from "./pages/Academic/Subject";
+import AddSubject from "./pages/Academic/AddSubject";
+
+import Syllabus from "./pages/Academic/Syllabus";
+import AddSyllabus from "./pages/Academic/AddSyllabus";
+
+import Assignment from "./pages/Academic/Assignment";
+import AddAssignment from "./pages/Academic/AddAssignment.tsx";
+
 export default function App() {
   return (
     <>
@@ -125,6 +140,26 @@ export default function App() {
             <Route path="/viewuser/:id" element={<ViewUser />} />
             <Route path="/edituser/:id" element={<EditUser />} />
 
+            {/* Academic */}
+            <Route path="/classes" element={<Classes />} />
+            <Route path="/addClass" element={<AddClasses />} />
+            <Route path="/editclass/:id" element={<AddClasses />} />
+
+            <Route path="/section" element={<Section />} />
+            <Route path="/addSection" element={<AddSection />} />
+            <Route path="/editsection/:id" element={<AddSection />} />
+
+            <Route path="/subject" element={<Subject />} />
+            <Route path="/addSubject" element={<AddSubject />} />
+            <Route path="/editsubject/:id" element={<AddSubject />} />
+            
+            <Route path="/syllabus" element={<Syllabus />} />
+            <Route path="/addSyllabus" element={<AddSyllabus />} />
+            <Route path="/editsyllabus/:id" element={<AddSyllabus />} />
+
+            <Route path="/assignment" element={<Assignment />} />
+            <Route path="/addAssignment" element={<AddAssignment />} />
+            {/* <Route path="/editsyllabus/:id" element={<AddSyllabus />} /> */}
 
             <Route path="/blank" element={<Blank />} />
             <Route path="/form-elements" element={<FormElements />} />

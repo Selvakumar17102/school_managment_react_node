@@ -66,7 +66,8 @@ const navItems: NavItem[] = [
   {
     name: "Academic",
     icon: <ListIcon />,
-    subItems: [{ name: "Class", path: "/classes", pro: false },
+    subItems: [
+      { name: "Class", path: "/classes", pro: false },
       { name: "Section", path: "/section", pro: false },
       { name: "Subject", path: "/subject", pro: false },
       { name: "Syllabus", path: "/syllabus", pro: false },

@@ -21,7 +21,7 @@ const User = sequelize.define('User', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    // unique: true,
     validate: { isEmail: true }
   },
   phone: {
@@ -43,7 +43,7 @@ const User = sequelize.define('User', {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    // unique: true
   },
   password: {
     type: DataTypes.STRING,
@@ -62,16 +62,16 @@ const User = sequelize.define('User', {
 }, {
   tableName: 'users',
   timestamps: true,
-  indexes: [
-    {
-      unique: true,
-      fields: ['email']
-    },
-    {
-      unique: true,
-      fields: ['username']
-    }
-  ]
+  // indexes: [
+  //   {
+  //     unique: true,
+  //     fields: ['email']
+  //   },
+  //   {
+  //     unique: true,
+  //     fields: ['username']
+  //   }
+  // ]
 });
 
 module.exports = User;

@@ -24,6 +24,11 @@ const Student = require('./student.model')(sequelize, Sequelize.DataTypes);
 const Parent = require('./parent.model')(sequelize, Sequelize.DataTypes);
 const Teacher = require('./teacher.model')(sequelize, Sequelize.DataTypes);
 const MasterRole = require('./masterrole.model')(sequelize, Sequelize.DataTypes);
+const Class = require('./class.model')(sequelize, Sequelize.DataTypes);
+const Section = require("./section.model.js")(sequelize, Sequelize);
+const Subject = require("./subject.model.js")(sequelize, Sequelize);
+const Syllabus = require("./syllabus.model.js")(sequelize, Sequelize);
+const Assignment = require("./assignment.model.js")(sequelize, Sequelize);
 
 
 db.User = User;
@@ -31,6 +36,17 @@ db.Student = Student;
 db.Parent = Parent;
 db.Teacher = Teacher;
 db.MasterRole = MasterRole;
+db.Class = Class;
+db.Section = Section;
+db.Subject = Subject;
+db.Syllabus = Syllabus;
+db.Assignment = Assignment;
 
 module.exports = db;
+
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);  
+  }
+});
 

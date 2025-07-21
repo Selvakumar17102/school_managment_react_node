@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const MasterRole = sequelize.define("master_roles", {
+  const MasterRole = sequelize.define("Master_roles", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     role_name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      // unique: true
     }
   }, {
     tableName: "master_roles",
