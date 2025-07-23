@@ -159,7 +159,7 @@ export default function App() {
 
             <Route path="/assignment" element={<Assignment />} />
             <Route path="/addAssignment" element={<AddAssignment />} />
-            {/* <Route path="/editsyllabus/:id" element={<AddSyllabus />} /> */}
+            <Route path="/editassignment/:id" element={<AddAssignment />} />
 
             <Route path="/blank" element={<Blank />} />
             <Route path="/form-elements" element={<FormElements />} />

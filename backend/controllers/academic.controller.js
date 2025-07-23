@@ -308,36 +308,119 @@ exports.createAssignment = async (req, res) => {
   const t = await Assignment.sequelize.transaction();
   try {
 
-    console.log("sdsdsdsdsssssssssssssssss",req.body);
+    const { title, description, deadline,classId,sectionId,subjectId } = req.body;
 
+    let files = [];
 
-    // const { classId, title, description } = req.body;
+    if (req.file) {
+      files.push(req.file.filename);
+    }
 
-    // let files = [];
+    if (req.files && Array.isArray(req.files)) {
+      files = req.files.map((file) => file.filename);
+    }
 
-    // if (req.file) {
-    //   files.push(req.file.filename);
-    // }
+    const newAssignment = await Assignment.create(
+      {
+        title,
+        description,
+        deadline,
+        classId,
+        sectionId,
+        subjectId,
+        files,
+      },
+      { transaction: t }
+    );
 
-    // if (req.files && Array.isArray(req.files)) {
-    //   files = req.files.map((file) => file.filename);
-    // }
-
-    // const newSyllabus = await Syllabus.create(
-    //   {
-    //     classId,
-    //     title,
-    //     description,
-    //     files,
-    //   },
-    //   { transaction: t }
-    // );
-
-    // await t.commit();
-    // res.status(201).json({ message: "Syllabus created", data: newSyllabus });
+    await t.commit();
+    res.status(201).json({ message: "Assignment created", data: newAssignment });
   } catch (error) {
     await t.rollback();
     console.error("Error creating Assignment:", error);
     res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+exports.assignmentList = async (req, res) => {
+  try {
+
+    const assignments = await Assignment.findAll({
+      include: [
+        {
+          model: Class,
+          as: "class",
+          attributes: ['id', 'className']
+        },
+        {
+          model: Section,
+          as: "section",
+          attributes: ['id', 'sectionName']
+        },
+        {
+          model: Subject,
+          as: "subject",
+          attributes: ['id', 'SubjectName']
+        },
+      ]
+    });
+
+    res.status(200).json(assignments);
+  } catch (error) {
+    console.error("Error fetching assignments:", error);
+    res.status(500).json({ error: "Failed to fetch assignments list" });
+  }
+};
+
+
+exports.getAssignmentById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const cls = await Assignment.findByPk(id);
+        if (!cls) return res.status(404).json({ error: "Assignment not found" });
+        res.json(cls);
+    } catch (error) {
+        console.error("Fetch error:", error);
+        res.status(500).json({ error: "Failed to fetch Assignment" });
+    }
+};
+
+exports.updateAssignment = async (req, res) => {
+  const assignmentId = req.params.id;
+
+  try {
+    const existing = await Assignment.findByPk(assignmentId);
+    if (!existing) {
+      return res.status(404).json({ error: "Assignment not found" });
+    }
+
+    const { deadline,subjectId,sectionId,classId, title, description } = req.body;
+
+    if (req.files && req.files.length > 0 && existing.files) {
+      const oldFiles = JSON.parse(existing.files);
+      oldFiles.forEach((file) => {
+        const filePath = path.join(__dirname, "../uploads/assignment", file);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      });
+    }
+
+    const fileNames = req.files ? req.files.map((file) => file.filename) : JSON.parse(existing.files);
+
+    await existing.update({
+      sectionId,
+      subjectId,
+      classId,
+      title,
+      description,
+      deadline,
+      files: JSON.stringify(fileNames), // save as stringified array
+    });
+
+    res.status(200).json({ message: "Assignment updated successfully" });
+  } catch (error) {
+    console.error("Error updating Assignment:", error);
+    res.status(500).json({ error: "Failed to update Assignment" });
   }
 };

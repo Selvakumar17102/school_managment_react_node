@@ -24,8 +24,8 @@ router.get("/syllabus/:id", academicController.getSyllabusById);
 router.put("/syllabus/:id", upload.array("file", 10), academicController.updateSyllabus);
 
 router.post("/saveAssignment", upload.array("file", 10), academicController.createAssignment);
-// router.get("/syllabuslist", academicController.syllabusList);
-// router.get("/syllabus/:id", academicController.getSyllabusById);
-// router.put("/syllabus/:id", upload.array("file", 10), academicController.updateSyllabus);
+router.get("/assignmentlist", academicController.assignmentList);
+router.get("/assignment/:id", academicController.getAssignmentById);
+router.put("/assignment/:id", upload.array("file", 10), academicController.updateAssignment);
 
 module.exports = router;

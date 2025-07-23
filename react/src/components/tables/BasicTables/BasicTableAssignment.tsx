@@ -25,12 +25,13 @@ declare module "jspdf" {
 
 interface Order {
   id: number;
-  section: string;
-  category: string;
-  capacity: string;
+  title: string;
+  description: string;
+  deadline: string;
   classname: string;
-  classteacher: string;
-  notes: string;
+  sectionname: string;
+  subjectname: string;
+  files: File[];
 }
 
 
@@ -41,31 +42,30 @@ export default function BasicTableAssignment() {
   const [tableData, setTableData] = useState<Order[]>([]);
 
   useEffect(() => {
-    const fetchClasses = async () => {
+    const fetchAssignments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/sectionlist");
+        const response = await fetch("http://localhost:5000/api/assignmentlist");
         const data = await response.json();
-
-        console.log("iuweyiuryruwqiew",data);
       
-        const formattedData: Order[] = data.map((sections: any) => ({
-          id: sections.id,
-          section: sections.sectionName,
-          category: sections.category,
-          capacity: sections.capacity,
-          classname: sections.Class.className,
-          classteacher: sections.Teacher.name,
-          notes: sections.notes,
+        const formattedData: Order[] = data.map((assignments: any) => ({
+          id: assignments.id,
+          title: assignments.title,
+          description: assignments.description,
+          deadline: assignments.deadline,
+          classname: assignments.class.className,
+          sectionname: assignments.section.sectionName,
+          subjectname: assignments.subject.subjectName,
+          files: assignments.files ? JSON.parse(assignments.files) : [],
         }));
 
 
         setTableData(formattedData);
       } catch (error) {
-        console.error("Error fetching sections:", error);
+        console.error("Error fetching assignments:", error);
       }
     };
 
-    fetchClasses();
+    fetchAssignments();
   });
 
 
@@ -80,8 +80,13 @@ export default function BasicTableAssignment() {
 
     return tableData.filter((order) => {
       return (
-        order.section.toLowerCase().includes(lowerQuery) ||
-        order.notes.toLowerCase().includes(lowerQuery)
+        order.classname.toLowerCase().includes(lowerQuery) ||
+        order.sectionname.toLowerCase().includes(lowerQuery) ||
+        order.subjectname.toLowerCase().includes(lowerQuery) ||
+        order.title.toLowerCase().includes(lowerQuery) ||
+        order.description.toLowerCase().includes(lowerQuery) ||
+        order.deadline.toLowerCase().includes(lowerQuery) ||
+        order.files.toString().toLowerCase().includes(lowerQuery)
       );
     });
   }, [searchQuery, tableData]);
@@ -96,26 +101,35 @@ export default function BasicTableAssignment() {
   const exportExcel = () => {
     const dataForExcel = filteredData.map((order, index) => ({
       "S.No": index + 1,
-      setion: order.section,
-      notes: order.notes,
+      "Class Name": order.classname,
+      "Section Name": order.sectionname,
+      "Subject Name": order.subjectname,
+      "Title": order.title,
+      "Description": order.description,
+      "Deadline": order.description,
+      "File": order.files,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
-    XLSX.writeFile(workbook, "classes.xlsx");
+    XLSX.writeFile(workbook, "Sections.xlsx");
   };
 
   const exportPDF = () => {
   const doc = new jsPDF();
-  const tableColumn = ["S.No", "Section", "Category", "capacity", "Class Name", "Class Teacher", "Notes", "Action"];
+  const tableColumn = ["S.No", "Title", "Description", "Deadline", "Class Name", "Section name","Subject Name", "Action"];
   const tableRows: (string | number)[][] = [];
 
   filteredData.forEach((order, index) => {
     const row = [
       index + 1,
-      order.section,
-      order.notes,
+      order.title,
+      order.description,
+      order.deadline,
+      order.classname,
+      order.sectionname,
+      order.subjectname,
     ];
     tableRows.push(row);
   });
@@ -125,14 +139,14 @@ export default function BasicTableAssignment() {
       body: tableRows,
       startY: 20,
     });
-    doc.text("section Table", 14, 15);
-    doc.save("section.pdf");
+    doc.text("assignment Table", 14, 15);
+    doc.save("assignment.pdf");
   };
 
   const copyToClipboard = () => {
-    let copyText = "S.No\tSection\tCategory\tcapacity\tClass name\tClass Teacher\tNotes\tAction\n";
+    let copyText = "S.No\tTitle\tDescription\tDeadline\tClass name\tSection Name\tSubject Name\tAction\n";
     filteredData.forEach((order, index) => {
-      copyText += `${index + 1}\t${order.section}\t${order.notes}\n`;
+      copyText += `${index + 1}\t${order.title}\t${order.description}\t${order.deadline}\t${order.classname}\t${order.sectionname}\t${order.subjectname}\n`;
     });
 
     navigator.clipboard.writeText(copyText);
@@ -223,14 +237,14 @@ export default function BasicTableAssignment() {
               </TableCell>
               <TableCell isHeader
                 className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
-                Section
+                Title
               </TableCell>
               <TableCell isHeader
                 className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
-                Category
+                Description
               </TableCell><TableCell isHeader
                 className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
-                Capacity
+                Deadline
               </TableCell>
               <TableCell isHeader
                 className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
@@ -238,11 +252,15 @@ export default function BasicTableAssignment() {
               </TableCell>
               <TableCell isHeader
                 className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
-                Class Teacher
+                Section Name
               </TableCell>
               <TableCell isHeader
                 className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
-                Notes
+                Subject Name
+              </TableCell>
+              <TableCell isHeader
+                className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none`}>
+                File
               </TableCell>
               <TableCell isHeader
                 className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 cursor-pointer select-none `}>
@@ -267,33 +285,42 @@ export default function BasicTableAssignment() {
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {(currentPage - 1) * rowsPerPage + index + 1}
                   </TableCell>
-                  <TableCell className="px-5 py-4 sm:px-6 text-start">
-                    <div className="flex items-center gap-3">
-                      <div>
-                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                          {order.section}
-                        </span>
-                      </div>
-                    </div>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {order.title}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.category}
+                    {order.description}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.capacity}
+                    {order.deadline}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {order.classname}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.classteacher}
+                    {order.sectionname}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.notes}
+                    {order.subjectname}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {Array.isArray(order.files) &&
+                      order.files.map((file, i) => (
+                        <div key={i}>
+                          <a
+                            href={`http://localhost:5000/uploads/assignment/${file}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 underline"
+                          >
+                            {file}
+                          </a>
+                        </div>
+                      ))}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     <div className="flex gap-3 items-center">
-                      <button onClick={() => navigate(`/editsection/${order.id}`)} title="Edit">
+                      <button onClick={() => navigate(`/editassignment/${order.id}`)} title="Edit">
                         <Pencil className="w-5 h-5 text-green-500 hover:text-green-700" />
                       </button>
                       <button onClick={() => handleDelete(order.id)} title="Delete">

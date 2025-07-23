@@ -53,9 +53,6 @@ export default function BasicTableSyllabus() {
 
         }));
 
-        console.log("ssssssssssssss",formattedData);
-
-
         setTableData(formattedData);
       } catch (error) {
         console.error("Error fetching syllabus:", error);
