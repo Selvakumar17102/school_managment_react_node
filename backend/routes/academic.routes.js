@@ -13,6 +13,10 @@ router.get("/sectionlist", academicController.sectionList);
 router.get("/section/:id", academicController.getSectionById);
 router.put("/section/:id", academicController.updateSection);
 
+router.get("/sectionlist/:classId", academicController.sectionListByClass);
+router.get("/routineclass/:classId", academicController.getRoutinesByClass);
+
+
 router.post("/savesubject", upload.none(), academicController.createSubject);
 router.get("/subjectlist", academicController.subjectList);
 router.get("/subject/:id", academicController.getSubjectById);
@@ -27,5 +31,7 @@ router.post("/saveAssignment", upload.array("file", 10), academicController.crea
 router.get("/assignmentlist", academicController.assignmentList);
 router.get("/assignment/:id", academicController.getAssignmentById);
 router.put("/assignment/:id", upload.array("file", 10), academicController.updateAssignment);
+
+router.post("/saveroutines", upload.none(), academicController.createRoutines);
 
 module.exports = router;

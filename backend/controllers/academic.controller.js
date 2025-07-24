@@ -1,4 +1,4 @@
-  const { Class, Teacher,Section,Subject,Syllabus,Assignment } = require('../models');
+  const { Class, Teacher,Section,Subject,Syllabus,Assignment,Routine } = require('../models');
 
 exports.createClass = async (req, res) => {
   const t = await Class.sequelize.transaction();
@@ -40,6 +40,7 @@ exports.classList = async (req, res) => {
 
 exports.getClassById = async (req, res) => {
     const { id } = req.params;
+
     try {
         const cls = await Class.findByPk(id);
         if (!cls) return res.status(404).json({ error: "Class not found" });
@@ -104,6 +105,51 @@ exports.sectionList = async (req, res) => {
   } catch (error) {
     console.error("Error fetching sections:", error);
     res.status(500).json({ error: "Failed to fetch sections list" });
+  }
+};
+
+exports.sectionListByClass = async (req, res) => {
+  const classId = req.params.classId;
+
+  try {
+    const sections = await Section.findAll({ where: { classId } });
+    res.json(sections);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch sections" });
+  }
+};
+
+exports.getRoutinesByClass = async (req, res) => {
+  const { classId } = req.params;
+
+  try {
+    const routines = await Routine.findAll({
+      include: [
+        {
+          model: Section,
+          as: "section",
+          where: { classId },
+          attributes: ["id", "sectionName"]
+        },
+        {
+          model: Subject,
+          as: "subject",
+          attributes: ["id", "subjectName"]
+        },
+        {
+          model: Teacher,
+          as: "teacher",
+          attributes: ["id", "name"]
+        }
+      ],
+      order: [["day", "ASC"], ["startTime", "ASC"]],
+    });
+
+    res.json(routines);
+  } catch (err) {
+    console.error("Routine fetch failed:", err);
+    res.status(500).json({ error: "Failed to fetch routines" });
   }
 };
 
@@ -372,7 +418,6 @@ exports.assignmentList = async (req, res) => {
   }
 };
 
-
 exports.getAssignmentById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -422,5 +467,26 @@ exports.updateAssignment = async (req, res) => {
   } catch (error) {
     console.error("Error updating Assignment:", error);
     res.status(500).json({ error: "Failed to update Assignment" });
+  }
+};
+
+exports.createRoutines = async (req, res) => {
+  const t = await Routine.sequelize.transaction();
+  try {
+
+    const routines = await Routine.create({
+      ...req.body
+    }, { transaction: t });
+    await t.commit();
+
+    res.status(201).json({
+      message: "routines created successfully",
+      routines
+    });
+    
+  } catch (error) {
+    await t.rollback();
+    console.error("Error creating Routine:", error);
+    res.status(500).json({ error: "Something went wrong" });
   }
 };

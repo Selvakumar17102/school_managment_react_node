@@ -62,7 +62,10 @@ import Syllabus from "./pages/Academic/Syllabus";
 import AddSyllabus from "./pages/Academic/AddSyllabus";
 
 import Assignment from "./pages/Academic/Assignment";
-import AddAssignment from "./pages/Academic/AddAssignment.tsx";
+import AddAssignment from "./pages/Academic/AddAssignment";
+
+import Routine from "./pages/Academic/Routine";
+import AddRoutine from "./pages/Academic/AddRoutine";
 
 export default function App() {
   return (
@@ -160,6 +163,11 @@ export default function App() {
             <Route path="/assignment" element={<Assignment />} />
             <Route path="/addAssignment" element={<AddAssignment />} />
             <Route path="/editassignment/:id" element={<AddAssignment />} />
+
+
+            <Route path="/routine" element={<Routine />} />
+            <Route path="/addRoutine" element={<AddRoutine />} />
+
 
             <Route path="/blank" element={<Blank />} />
             <Route path="/form-elements" element={<FormElements />} />
