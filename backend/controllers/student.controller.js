@@ -1,11 +1,11 @@
-const { User, Student } = require('../models');
+const { User, Student,sequelize  } = require('../models');
 const bcrypt = require('bcrypt');
 
 exports.createStudent = async (req, res) => {
   const t = await User.sequelize.transaction();
 
   try {
-    const { name, email, password } = req.body;
+    const { name, dob,gender,religion,email,phone,address,admissionDate,username, password } = req.body;
     const photo = req.file ? req.file.filename : null;
 
     const existingUser = await User.findOne({ where: { email } });
@@ -16,7 +16,15 @@ exports.createStudent = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       name,
+      dob,
+      gender,
+      religion,
       email,
+      phone,
+      address,
+      joiningDate : admissionDate,
+      photo,
+      username,
       password: hashedPassword,
       role: 'student'
     }, { transaction: t });
@@ -42,7 +50,14 @@ exports.createStudent = async (req, res) => {
 
 exports.studentList = async (req, res) => {
   try {
-    const students = await Student.findAll();
+    const [students] = await sequelize.query(`
+      SELECT s.*, 
+             c.className AS classNameLabel, 
+             sec.sectionName AS sectionLabel
+      FROM students s
+      LEFT JOIN classes c ON s.className = c.id
+      LEFT JOIN sections sec ON s.section = sec.id
+    `);
     res.status(200).json(students);
   } catch (error) {
     console.error("Error fetching students:", error);

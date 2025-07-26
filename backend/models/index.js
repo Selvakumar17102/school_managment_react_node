@@ -30,6 +30,7 @@ const Subject = require("./subject.model.js")(sequelize, Sequelize);
 const Syllabus = require("./syllabus.model.js")(sequelize, Sequelize);
 const Assignment = require("./assignment.model.js")(sequelize, Sequelize);
 const Routine = require("./routine.model.js")(sequelize, Sequelize);
+const Sattendance = require("./sattendance.model.js")(sequelize, Sequelize);
 
 
 db.User = User;
@@ -43,6 +44,7 @@ db.Subject = Subject;
 db.Syllabus = Syllabus;
 db.Assignment = Assignment;
 db.Routine = Routine;
+db.Sattendance = Sattendance;
 
 module.exports = db;
 

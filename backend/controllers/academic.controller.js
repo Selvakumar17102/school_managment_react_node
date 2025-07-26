@@ -1,4 +1,4 @@
-  const { Class, Teacher,Section,Subject,Syllabus,Assignment,Routine } = require('../models');
+const { Class, Teacher,Section,Subject,Syllabus,Assignment,Routine } = require('../models');
 
 exports.createClass = async (req, res) => {
   const t = await Class.sequelize.transaction();

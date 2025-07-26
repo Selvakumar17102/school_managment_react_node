@@ -67,6 +67,9 @@ import AddAssignment from "./pages/Academic/AddAssignment";
 import Routine from "./pages/Academic/Routine";
 import AddRoutine from "./pages/Academic/AddRoutine";
 
+import Sattendance from "./pages/Attendance/Sattendance";
+import AddStudentAttendance from "./pages/Attendance/AddStudentAttendance";
+
 export default function App() {
   return (
     <>
@@ -167,6 +170,10 @@ export default function App() {
 
             <Route path="/routine" element={<Routine />} />
             <Route path="/addRoutine" element={<AddRoutine />} />
+
+
+            <Route path="/sattendance" element={<Sattendance />} />
+            <Route path="/addStudentAttendance" element={<AddStudentAttendance />} />
 
 
             <Route path="/blank" element={<Blank />} />

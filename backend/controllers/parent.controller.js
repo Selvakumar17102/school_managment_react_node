@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt');
 exports.createParent = async (req, res) => {
   const t = await User.sequelize.transaction();
   try {
+
+
+    console.log(req.body);
+
     const {
       guardianName,
       fatherName,
@@ -23,7 +27,15 @@ exports.createParent = async (req, res) => {
 
     const user = await User.create({
       name: guardianName,
+      dob : 'NA',
+      gender : 'NA',
+      religion : 'NA',
       email,
+      phone,
+      address,
+      joiningDate : 'NA',
+      photo,
+      username,
       password: hashedPassword,
       role: 'parent'
     }, { transaction: t });

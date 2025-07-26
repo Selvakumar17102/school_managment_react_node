@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function AddStudent() {
@@ -28,7 +28,68 @@ export default function AddStudent() {
         username: "",
         password: "",
     });
+
+    type ClassType = {
+      id: number;
+      className: string;
+    };
+
+    type Section = {
+      id: number;
+      sectionName: string;
+    };
+
+
+
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    const [classes, setClasses] = useState<ClassType[]>([]);
+    const [sections, setSections] = useState<Section[]>([]);
+
+    const [guardianTypes, setGuardianTypes] = useState<{ id: number; guardianName: string }[]>([]);
+
+
+    useEffect(() => {
+      fetch("http://localhost:5000/api/classlist")
+        .then(res => res.json())
+        .then(setClasses)
+        .catch(err => console.error("Failed to fetch class list", err));
+    }, []);
+
+    const classOptions = classes.map(cls => ({
+      id: cls.id,
+      name: cls.className,
+    }));
+
+    useEffect(() => {
+      fetch("http://localhost:5000/api/sectionlist")
+        .then((res) => res.json())
+        .then(setSections)
+        .catch((err) => console.error("Failed to load sections", err));
+    }, []);
+
+    const sectionOptions = sections.map((s) => ({
+      id: s.id,
+      name: s.sectionName,
+    }));
+
+
+    useEffect(() => {
+      fetch("http://localhost:5000/api/parentslist")
+        .then((res) => res.json())
+        .then(setGuardianTypes)
+        .catch((err) => console.error("Failed to load guardian types", err));
+    }, []);
+
+    const guardianOptions = guardianTypes.map((g) => ({
+      id: g.id,
+      name: g.guardianName,
+    }));
+
+
+
+
+
 
 
     const validate = () => {
@@ -48,19 +109,19 @@ export default function AddStudent() {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const target = e.target;
-    const { name, value } = target;
-    if ("files" in target && target.files) {
-        setForm((prev) => ({
-        ...prev,
-        [name]: target.files![0],
-        }));
-    } else {
-        setForm((prev) => ({
-        ...prev,
-        [name]: value,
-        }));
-    }
+      const target = e.target;
+      const { name, value } = target;
+      if ("files" in target && target.files) {
+          setForm((prev) => ({
+          ...prev,
+          [name]: target.files![0],
+          }));
+      } else {
+          setForm((prev) => ({
+          ...prev,
+          [name]: value,
+          }));
+      }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,7 +158,7 @@ export default function AddStudent() {
         <h2 className="text-xl font-semibold mb-4">Add Student</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input name="name" label="Name" onChange={handleChange} value={form.name} errors={errors}/>
-            <Select name="guardian" label="Guardian" value={form.guardian} onChange={handleChange} options={["Father", "Mother", "Guardian"]} errors={errors}/>
+            <Select name="guardian" label="Guardian" value={form.guardian} onChange={handleChange} options={guardianOptions} errors={errors}/>
             <Input name="admissionDate" label="Admission Date" type="date" onChange={handleChange} value={form.admissionDate} errors={errors}/>
             <Input name="dob" label="Date of Birth" type="date" onChange={handleChange} value={form.dob} errors={errors}/>
             <Select name="gender" label="Gender" value={form.gender} onChange={handleChange} options={["Male", "Female", "Other"]} errors={errors}/>
@@ -108,8 +169,8 @@ export default function AddStudent() {
             <Input name="address" label="Address" onChange={handleChange} value={form.address} errors={errors}/>
             <Input name="state" label="State" onChange={handleChange} value={form.state} errors={errors}/>
             <Select name="country" label="Country" value={form.country} onChange={handleChange} options={["India", "USA", "UK", "Canada"]} errors={errors}/>
-            <Select name="className" label="Class" value={form.className} onChange={handleChange} options={["Class 1", "Class 2", "Class 3"]} errors={errors}/>
-            <Select name="section" label="Section" value={form.section} onChange={handleChange} options={["A", "B", "C"]} errors={errors}/>
+            <Select name="className" label="Class" value={form.className} onChange={handleChange} options={classOptions} errors={errors}/>
+            <Select name="section" label="Section" value={form.section} onChange={handleChange} options={sectionOptions} errors={errors}/>
             <Select name="optionalSubject" label="Optional Subject" value={form.optionalSubject} onChange={handleChange} options={["Maths", "Computer", "French"]} errors={errors}/>
             <Input name="registerNo" label="Register No" onChange={handleChange} value={form.registerNo} errors={errors}/>
             <Input name="roll" label="Roll" onChange={handleChange} value={form.roll} errors={errors}/>
@@ -134,6 +195,7 @@ type InputProps = {
   type?: string;
   value?: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  
   errors?: { [key: string]: string }; // Add this
 };
 const Input = ({ label, name, type = "text", value, onChange, errors = {} }: InputProps) => (
@@ -163,33 +225,49 @@ const Input = ({ label, name, type = "text", value, onChange, errors = {} }: Inp
 
 
 type SelectProps = {
-  label: string;
   name: string;
-  value: string;
+  label: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: string[];
-  errors?: { [key: string]: string };  // Add errors prop
+  options: { id: string | number; name: string }[] | string[];
+  errors?: { [key: string]: string };
 };
-const Select = ({ label, name, value, onChange, options, errors = {} }: SelectProps) => (
+const Select = ({
+  name,
+  label,
+  value,
+  onChange,
+  options,
+  errors = {},
+}: SelectProps) => (
   <div className="mb-4">
-    <label className="block mb-1 text-sm font-medium" htmlFor={name}>{label}</label>
+    <label htmlFor={name} className="block mb-1 text-sm font-medium">
+      {label}
+    </label>
     <select
-      id={name}
       name={name}
+      id={name}
       value={value}
       onChange={onChange}
-      className={`w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
-        ${errors[name] ? "border-red-500" : "border-gray-300"}`}
+      className={`w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+        errors[name] ? "border-red-500" : "border-gray-300"
+      }`}
     >
-      <option value="" selected disabled>Select</option>
-      {options.map((opt, idx) => (
-        <option key={idx} value={opt}>{opt}</option>
-      ))}
+      <option value="">Select {label}</option>
+      {options.map((opt, index) =>
+        typeof opt === "string" ? (
+          <option key={index} value={opt}>
+            {opt}
+          </option>
+        ) : (
+          <option key={opt.id} value={opt.id}>
+            {opt.name}
+          </option>
+        )
+      )}
     </select>
     {errors[name] && (
-      <p className="text-red-500 text-xs mt-1" role="alert" aria-live="assertive">
-        {errors[name]}
-      </p>
+      <p className="text-red-500 text-xs mt-1">{errors[name]}</p>
     )}
   </div>
 );

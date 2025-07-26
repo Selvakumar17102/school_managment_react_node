@@ -53,7 +53,7 @@ export default function BasicTableOne() {
           user: {
             image: student.photo,
             name: student.name,
-            role: `Class : ${student.className} || Sec : ${student.section},`,
+            role: `Class : ${student.classNameLabel} || Sec : ${student.sectionLabel},`,
           },
           email: student.email,
         }));
