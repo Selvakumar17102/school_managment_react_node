@@ -1,6 +1,7 @@
 const db = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Op } = require("sequelize");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -105,9 +106,12 @@ const roleList = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const alluser = await db.User.findAll({
-      offset: 5
+      where: {
+        role: {
+          [Op.notIn]: ["superadmin", "admin", "teacher", "student", "parent"]
+        }
+      }
     });
-
 
     res.status(200).json(alluser);
   } catch (error) {

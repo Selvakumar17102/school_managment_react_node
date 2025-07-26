@@ -31,6 +31,8 @@ const Syllabus = require("./syllabus.model.js")(sequelize, Sequelize);
 const Assignment = require("./assignment.model.js")(sequelize, Sequelize);
 const Routine = require("./routine.model.js")(sequelize, Sequelize);
 const Sattendance = require("./sattendance.model.js")(sequelize, Sequelize);
+const Tattendance = require("./tattendance.model.js")(sequelize, Sequelize);
+const Uattendance = require("./uattendance.model.js")(sequelize, Sequelize);
 
 
 db.User = User;
@@ -45,6 +47,8 @@ db.Syllabus = Syllabus;
 db.Assignment = Assignment;
 db.Routine = Routine;
 db.Sattendance = Sattendance;
+db.Tattendance = Tattendance;
+db.Uattendance = Uattendance;
 
 module.exports = db;
 

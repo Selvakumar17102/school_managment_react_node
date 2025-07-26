@@ -1,168 +1,191 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
-const days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+type Student = {
+  id: number;
+  name: string;
+  email: string;
+  roll: number;
+  photo?: string;
+  classId: number;
+  sectionId: number;
+};
 
-type Routine = {
-    id: number;
-    day: string;
-    startTime: string;
-    endTime: string;
-    sectionId: number;
-    room: string;
-    subject?: {
-      subjectName: string;
-    };
-    teacher?: {
-      name: string;
-    };
-  };
+type Class = {
+  id: number;
+  className: string;
+};
 
-  type Section = {
-    id: number;
-    sectionName: string;
-    classId: number;
-  };
-
-  type Class = {
-    id: number;
-    className: string;
-  };
-
-
+type Section = {
+  id: number;
+  sectionName: string;
+};
 
 
 export default function BasicTableSattendance() {
 
-  const [classId, setClassId] = useState("");
+  const navigate = useNavigate();
+
+
   const [classes, setClasses] = useState<Class[]>([]);
   const [sections, setSections] = useState<Section[]>([]);
-  const [routines, setRoutines] = useState<Routine[]>([]);
-  const [activeTab, setActiveTab] = useState("All");
+  const [students, setStudents] = useState<Student[]>([]);
 
+  const [selectedClass, setSelectedClass] = useState<string>("");
+  const [selectedSection, setSelectedSection] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:5000/api/classlist")
-      .then((res) => res.json())
-      .then((data) => setClasses(data));
+      .then(res => res.json())
+      .then(setClasses)
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
-    if (classId) {
-      fetch(`http://localhost:5000/api/sectionlist/${classId}`)
-        .then((res) => res.json())
-        .then(setSections);
+    if (!selectedClass) return;
 
-      fetch(`http://localhost:5000/api/routineclass/${classId}`)
-        .then((res) => res.json())
-        .then(setRoutines);
+    fetch(`http://localhost:5000/api/studentsattendancelist?className=${selectedClass}`)
+      .then(res => res.json())
+      .then(setStudents)
+      .catch(console.error);
 
-      setActiveTab("All");
-    }
-  }, [classId]);
+    fetch(`http://localhost:5000/api/sectionlists/${selectedClass}`)
+      .then(res => res.json())
+      .then(setSections)
+      .catch(console.error);
 
-  
+    setSelectedSection("");
+    setActiveTab("all");
+  }, [selectedClass]);
 
+  useEffect(() => {
+    if (!selectedClass) return;
+    if (!selectedSection) return;
 
-  const getRoutineForDaySection = (day: string, sectionId: number | string) => 
-  routines
-    .filter((r) => r.day === day && r.sectionId === sectionId)
-    .sort((a, b) => a.startTime.localeCompare(b.startTime));
+    fetch(`http://localhost:5000/api/studentsattendancelist?className=${selectedClass}&section=${selectedSection}`)
+      .then(res => res.json())
+      .then(setStudents)
+      .catch(console.error);
+  }, [selectedSection]);
 
+  const filteredStudents = students.filter(student =>
+    student.name.toLowerCase().includes(search.toLowerCase()) ||
+    student.email.toLowerCase().includes(search.toLowerCase())
+  );
 
-  const visibleSections = activeTab === "All"
-  ? sections
-  : sections.filter((s) => s.id === Number(activeTab));
+  const handleView = (student: Student) => {
+    navigate(`/viewStudentDetails/${student.id}`);
+  };
 
 
   return (
     <div className="p-4">
-      {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Class Routine</h2>
+        <h2 className="text-lg font-semibold">Student Attendance</h2>
         <select
-          value={classId}
-          onChange={(e) => setClassId(e.target.value)}
           className="border px-3 py-2 rounded"
+          value={selectedClass}
+          onChange={(e) => setSelectedClass(e.target.value)}
         >
           <option value="">Select Class</option>
-          {classes.map((cls) => (
-            <option key={cls.id} value={cls.id}>
-              {cls.className}
-            </option>
+          {classes.map(cls => (
+            <option key={cls.id} value={cls.id}>{cls.className}</option>
           ))}
         </select>
       </div>
 
-      {/* Tabs */}
       {sections.length > 0 && (
-        <div className="flex border-b mb-4">
+        <div className="flex gap-2 border-b pb-2 mb-4">
           <button
-            className={`px-4 py-2 ${activeTab === "All" ? "border-b-2 border-teal-500 font-semibold" : ""}`}
-            onClick={() => setActiveTab("All")}
+            className={`px-4 py-2 rounded-t ${activeTab === "all" ? "bg-teal-500 text-white" : "bg-gray-200"}`}
+            onClick={() => {
+              setActiveTab("all");
+              setSelectedSection("");
+            }}
           >
-            All Routines
+            All Students
           </button>
-          {sections.map((section) => (
+          {sections.map(sec => (
             <button
-              key={section.id}
-              className={`px-4 py-2 ${activeTab === String(section.id) ? "border-b-2 border-teal-500 font-semibold" : ""}`}
-              onClick={() => setActiveTab(String(section.id))}
+              key={sec.id}
+              className={`px-4 py-2 rounded-t ${activeTab === String(sec.id) ? "bg-teal-500 text-white" : "bg-gray-200"}`}
+              onClick={() => {
+                setActiveTab(String(sec.id));
+                setSelectedSection(String(sec.id));
+              }}
             >
-              {section.sectionName}
+              {sec.sectionName}
             </button>
           ))}
         </div>
       )}
 
-      {/* Table */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex gap-2">
+          <button className="px-3 py-1 border rounded text-sm">Copy</button>
+          <button className="px-3 py-1 border rounded text-sm">Excel</button>
+          <button className="px-3 py-1 border rounded text-sm">CSV</button>
+          <button className="px-3 py-1 border rounded text-sm">PDF</button>
+        </div>
+        <input
+          type="text"
+          placeholder="Search"
+          className="border px-3 py-1 rounded text-sm"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm border">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="border px-2 py-1">#</th>
+              <th className="border px-2 py-1">Photo</th>
+              <th className="border px-2 py-1">Name</th>
+              <th className="border px-2 py-1">Roll</th>
+              <th className="border px-2 py-1">Email</th>
+              <th className="border px-2 py-1">Action</th>
+            </tr>
+          </thead>
           <tbody>
-            {days.map((day) => (
-              <tr key={day}>
-                <td className="px-4 py-2 font-medium border bg-gray-50">{day}</td>
-                {visibleSections.map((sec) => {
-                  const list = getRoutineForDaySection(day, sec.id);
-                  return (
-                    <td key={sec.id} className="px-2 py-2 border align-top">
-                      {list.length > 0 ? (
-                        list.map((rtn) => (
-                          <div key={rtn.id} className="mb-2 p-2 bg-white shadow rounded border">
-                            <div className="text-sm font-semibold">
-                              {formatTime(rtn.startTime)} - {formatTime(rtn.endTime)}
-                            </div>
-                            <div className="text-xs">{rtn.subject?.subjectName}</div>
-                            <div className="text-xs text-gray-500">Room: {rtn.room}</div>
-                            <div className="text-xs text-gray-600 italic">{rtn.teacher?.name}</div>
-                            <div className="flex space-x-1 mt-1">
-                              <button className="text-orange-500 text-xs">✏️</button>
-                              <button className="text-red-500 text-xs">🗑️</button>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="text-gray-400 text-xs italic text-center">N/A</div>
-                      )}
-                    </td>
-                  );
-                })}
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student, index) => (
+                <tr key={student.id}>
+                  <td className="border px-2 py-1">{index + 1}</td>
+                  <td className="border px-2 py-1">
+                    <img
+                      src={`http://localhost:5000/uploads/${student.photo}`}
+                      alt="student"
+                      className="w-8 h-8 rounded-full mx-auto"
+                    />
+                  </td>
+                  <td className="border px-2 py-1">{student.name}</td>
+                  <td className="border px-2 py-1">{student.roll}</td>
+                  <td className="border px-2 py-1">{student.email}</td>
+                  <td className="border px-2 py-1 text-center">
+                    <button className="bg-teal-500 text-white px-2 py-1 rounded"
+                    onClick={() => handleView(student)}
+                    >
+                      ✓
+                    </button>
+
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="text-center py-3">
+                  No data available
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
     </div>
-  
   );
 }
-
-function formatTime(time: string): string {
-  const [h, m] = time.split(":");
-  const hour = parseInt(h, 10);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const formattedHour = ((hour + 11) % 12 + 1).toString();
-  return `${formattedHour}:${m} ${ampm}`;
-}
-
-

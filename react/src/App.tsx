@@ -69,6 +69,15 @@ import AddRoutine from "./pages/Academic/AddRoutine";
 
 import Sattendance from "./pages/Attendance/Sattendance";
 import AddStudentAttendance from "./pages/Attendance/AddStudentAttendance";
+import ViewSattendanceDetail from "./pages/Attendance/ViewSattendanceDetail";
+
+import Tattendance from "./pages/Attendance/Tattendance";
+import AddTeacherAttendance from "./pages/Attendance/AddTeacherAttendance";
+import ViewTattendanceDetail from "./pages/Attendance/ViewTattendanceDetail";
+
+import Uattendance from "./pages/Attendance/Uattendance";
+import AddUserAttendance from "./pages/Attendance/AddUserAttendance";
+import ViewUattendanceDetail from "./pages/Attendance/ViewUattendanceDetail.tsx";
 
 export default function App() {
   return (
@@ -174,6 +183,16 @@ export default function App() {
 
             <Route path="/sattendance" element={<Sattendance />} />
             <Route path="/addStudentAttendance" element={<AddStudentAttendance />} />
+            <Route path="/viewStudentDetails/:id" element={<ViewSattendanceDetail />} />
+
+
+            <Route path="/tattendance" element={<Tattendance />} />
+            <Route path="/addTeacherAttendance" element={<AddTeacherAttendance />} />
+            <Route path="/viewTeacherDetails/:id" element={<ViewTattendanceDetail />} />
+
+            <Route path="/uattendance" element={<Uattendance />} />
+            <Route path="/addUserAttendance" element={<AddUserAttendance />} />
+            <Route path="/viewUserDetails/:id" element={<ViewUattendanceDetail />} />
 
 
             <Route path="/blank" element={<Blank />} />
