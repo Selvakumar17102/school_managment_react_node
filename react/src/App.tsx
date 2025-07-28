@@ -77,7 +77,10 @@ import ViewTattendanceDetail from "./pages/Attendance/ViewTattendanceDetail";
 
 import Uattendance from "./pages/Attendance/Uattendance";
 import AddUserAttendance from "./pages/Attendance/AddUserAttendance";
-import ViewUattendanceDetail from "./pages/Attendance/ViewUattendanceDetail.tsx";
+import ViewUattendanceDetail from "./pages/Attendance/ViewUattendanceDetail";
+
+import Exam from "./pages/Exam/Exam";
+import AddExam from "./pages/Exam/AddExam";
 
 export default function App() {
   return (
@@ -193,6 +196,10 @@ export default function App() {
             <Route path="/uattendance" element={<Uattendance />} />
             <Route path="/addUserAttendance" element={<AddUserAttendance />} />
             <Route path="/viewUserDetails/:id" element={<ViewUattendanceDetail />} />
+
+            <Route path="/exam" element={<Exam />} />
+            <Route path="/addExam" element={<AddExam />} />
+            <Route path="/editexam/:id" element={<AddExam />} />
 
 
             <Route path="/blank" element={<Blank />} />

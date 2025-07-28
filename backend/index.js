@@ -8,6 +8,7 @@ const parentRoutes = require("./routes/parent.routes");
 const teacherRoutes = require("./routes/teacher.routes");
 const academicRoutes = require("./routes/academic.routes");
 const attendanceRoutes = require("./routes/attendance.routes");
+const examRoutes = require("./routes/exam.routes");
 const path = require("path");
 
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api', parentRoutes);
 app.use('/api', teacherRoutes);
 app.use("/api", academicRoutes);
 app.use("/api", attendanceRoutes);
+app.use("/api", examRoutes);
 
 // Test DB and Sync Models
 db.sequelize.sync({ alter: true }).then(() => {
