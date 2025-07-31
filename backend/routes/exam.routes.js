@@ -8,4 +8,13 @@ router.get("/examlist", examController.examList);
 router.get("/exam/:id", examController.getExamById);
 router.put("/exam/:id", examController.updateExam);
 
+router.post("/saveexamschedule", upload.none(), examController.createExamSchedule);
+router.get("/examschedulelist/:classId", examController.getExamSchedulesByClass);
+
+router.get("/getsectionsbyclass/:classId", examController.getSectionsByClass);
+
+router.get("/editexamschedule/:id", examController.getExamScheduleById);
+router.put("/updateexamschedule/:id", examController.updateExamSchedule);
+
+
 module.exports = router;

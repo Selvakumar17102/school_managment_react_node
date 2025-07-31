@@ -81,6 +81,8 @@ import ViewUattendanceDetail from "./pages/Attendance/ViewUattendanceDetail";
 
 import Exam from "./pages/Exam/Exam";
 import AddExam from "./pages/Exam/AddExam";
+import ExamSchedule from "./pages/Exam/ExamSchedule";
+import AddExamSchedule from "./pages/Exam/AddExamSchedule";
 
 export default function App() {
   return (
@@ -200,7 +202,11 @@ export default function App() {
             <Route path="/exam" element={<Exam />} />
             <Route path="/addExam" element={<AddExam />} />
             <Route path="/editexam/:id" element={<AddExam />} />
-
+            
+            <Route path="/examschedule" element={<ExamSchedule />} />
+            <Route path="/addExamSchedule" element={<AddExamSchedule />} />
+            <Route path="/editExamSchedule/:id" element={<AddExamSchedule isEditMode />} />
+            
 
             <Route path="/blank" element={<Blank />} />
             <Route path="/form-elements" element={<FormElements />} />
