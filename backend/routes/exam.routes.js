@@ -16,5 +16,9 @@ router.get("/getsectionsbyclass/:classId", examController.getSectionsByClass);
 router.get("/editexamschedule/:id", examController.getExamScheduleById);
 router.put("/updateexamschedule/:id", examController.updateExamSchedule);
 
+router.post("/savegrade", upload.none(), examController.createGrade);
+router.get("/gradelist", examController.gradeList);
+router.get("/grade/:id", examController.getGradeById);
+router.put("/grade/:id", examController.updateGrade);
 
 module.exports = router;

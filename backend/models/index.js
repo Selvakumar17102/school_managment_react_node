@@ -35,6 +35,7 @@ const Tattendance = require("./tattendance.model.js")(sequelize, Sequelize);
 const Uattendance = require("./uattendance.model.js")(sequelize, Sequelize);
 const Exam = require("./exam.model.js")(sequelize, Sequelize);
 const ExamSchedule = require("./examschedule.model.js")(sequelize, Sequelize);
+const Grade = require("./grade.model.js")(sequelize, Sequelize);
 
 
 db.User = User;
@@ -53,6 +54,7 @@ db.Tattendance = Tattendance;
 db.Uattendance = Uattendance;
 db.Exam = Exam;
 db.ExamSchedule = ExamSchedule;
+db.Grade = Grade;
 
 module.exports = db;
 

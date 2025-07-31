@@ -83,6 +83,8 @@ import Exam from "./pages/Exam/Exam";
 import AddExam from "./pages/Exam/AddExam";
 import ExamSchedule from "./pages/Exam/ExamSchedule";
 import AddExamSchedule from "./pages/Exam/AddExamSchedule";
+import Grade from "./pages/Exam/Grade";
+import AddGrade from "./pages/Exam/AddGrade";
 
 export default function App() {
   return (
@@ -207,6 +209,9 @@ export default function App() {
             <Route path="/addExamSchedule" element={<AddExamSchedule />} />
             <Route path="/editExamSchedule/:id" element={<AddExamSchedule isEditMode />} />
             
+            <Route path="/grade" element={<Grade />} />
+            <Route path="/addGrade" element={<AddGrade />} />
+            <Route path="/editGrade/:id" element={<AddGrade />} />
 
             <Route path="/blank" element={<Blank />} />
             <Route path="/form-elements" element={<FormElements />} />

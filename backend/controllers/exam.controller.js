@@ -1,4 +1,4 @@
-const { Exam,ExamSchedule,Class,Section,Subject } = require('../models');
+const { Exam,ExamSchedule,Class,Section,Subject,Grade } = require('../models');
 
 exports.createExam = async (req, res) => {
   const t = await Exam.sequelize.transaction();
@@ -153,4 +153,62 @@ exports.updateExamSchedule = async (req, res) => {
     console.error("Update Error:", error);
     res.status(500).json({ message: "Server Error" });
   }
+};
+
+exports.createGrade = async (req, res) => {
+  const t = await Grade.sequelize.transaction();
+  try {
+    const grades = await Grade.create({
+      ...req.body
+    }, { transaction: t });
+    await t.commit();
+
+    res.status(201).json({
+      message: "Grade created successfully",
+      grades
+    });
+
+  } catch (error) {
+    await t.rollback();
+    console.error("Error creating Grade:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+exports.gradeList = async (req, res) => {
+  try {
+    const grades = await Grade.findAll();
+
+    res.status(200).json(grades);
+  } catch (error) {
+    console.error("Error fetching grades:", error);
+    res.status(500).json({ error: "Failed to fetch grades list" });
+  }
+};
+
+exports.getGradeById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const cls = await Grade.findByPk(id);
+        if (!cls) return res.status(404).json({ error: "Grade not found" });
+        res.json(cls);
+    } catch (error) {
+        console.error("Fetch error:", error);
+        res.status(500).json({ error: "Failed to fetch Grade" });
+    }
+};
+
+exports.updateGrade = async (req, res) => {
+    const gradeId = req.params.id;
+    try {
+        const updated = await Grade.update(req.body, { where: { id: gradeId } });
+        if (updated[0] === 1) {
+            res.json({ message: "Grade updated successfully" });
+        } else {
+            res.status(404).json({ error: "Grade not found" });
+        }
+    } catch (error) {
+        console.error("Error updating Grade:", error);
+        res.status(500).json({ error: "Failed to update Grade" });
+    }
 };
