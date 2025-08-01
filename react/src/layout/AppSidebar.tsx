@@ -3,21 +3,20 @@ import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
 import {
-  // BoxCubeIcon,
+  BoxCubeIcon,
   CalenderIcon,
   GroupIcon,
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
   ListIcon,
-  // PageIcon,
+  PageIcon,
   // PieChartIcon,
   // PlugInIcon,
-  // TableIcon,
+  TableIcon,
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
-import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
@@ -65,7 +64,7 @@ const navItems: NavItem[] = [
 
   {
     name: "Academic",
-    icon: <ListIcon />,
+    icon: <BoxCubeIcon />,
     subItems: [
       { name: "Class", path: "/classes", pro: false },
       { name: "Section", path: "/section", pro: false },
@@ -88,7 +87,7 @@ const navItems: NavItem[] = [
 
   {
     name: "Exam",
-    icon: <ListIcon />,
+    icon: <PageIcon />,
     subItems: [
       { name: "Exam", path: "/exam", pro: false },
       { name: "Exam Schedule", path: "/examschedule", pro: false },
@@ -99,11 +98,22 @@ const navItems: NavItem[] = [
 
   {
     name: "Mark",
-    icon: <ListIcon />,
+    icon: <TableIcon />,
     subItems: [
       { name: "Mark", path: "/mark", pro: false },
       { name: "Mark Distribution", path: "/markpercentage", pro: false },
       { name: "Promotion", path: "/promotion", pro: false },
+    ],
+  },
+
+  {
+    name: "Leave Application",
+    icon: <TableIcon />,
+    subItems: [
+      { name: "Leave Category", path: "/leave-category", pro: false },
+      { name: "Leave Assign", path: "/blank", pro: false },
+      // { name: "Leave Apply", path: "/blank", pro: false },
+      // { name: "Leave Application", path: "/blank", pro: false },
     ],
   },
   
@@ -416,25 +426,8 @@ const AppSidebar: React.FC = () => {
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>
-            <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
   );

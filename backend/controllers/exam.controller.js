@@ -1,4 +1,4 @@
-const { Exam,ExamSchedule,Class,Section,Subject,Grade } = require('../models');
+const { Exam,ExamSchedule,Class,Section,Subject,Grade,Student,ExamAttendance } = require('../models');
 
 exports.createExam = async (req, res) => {
   const t = await Exam.sequelize.transaction();
@@ -211,4 +211,104 @@ exports.updateGrade = async (req, res) => {
         console.error("Error updating Grade:", error);
         res.status(500).json({ error: "Failed to update Grade" });
     }
+};
+
+exports.getAttendanceStudents = async (req, res) => {
+  const { className, section } = req.query;
+
+  try {
+    
+    const students = await Student.findAll({
+      where: {
+        className,
+        section,
+      },
+      order: [["roll", "ASC"]],
+    });
+
+    res.json(students);
+  } catch (error) {
+    console.error('Error fetching students for attendance:', error);
+    res.status(500).json({ error: 'Failed to fetch attendance students' });
+  }
+};
+
+exports.saveAttendance = async (req, res) => {
+  const { studentId, classId, sectionId, examId, subjectId, date, status } = req.body;
+
+  try {
+    const existing = await ExamAttendance.findOne({
+      where: { studentId, date, examId, subjectId }
+    });
+
+    if (existing) {
+      await existing.update({ status });
+    } else {
+      await ExamAttendance.create({
+        studentId,
+        classId,
+        sectionId,
+        examId,
+        subjectId,
+        date,
+        status,
+      });
+    }
+
+    res.json({ message: "Attendance saved" });
+  } catch (error) {
+    console.error("Error saving attendance:", error);
+    res.status(500).json({ message: "Failed to save attendance" });
+  }
+};
+
+exports.getStudentsAttendance = async (req, res) => {
+  const { classId, subjectId, examId } = req.query;
+  let className = classId;
+
+  try {
+    if (!classId || !subjectId || !examId) {
+      return res.status(400).json({ error: "Missing required parameters" });
+    }
+
+    const students = await Student.findAll({
+      where: { className },
+      order: [["roll", "ASC"]],
+    });
+
+    const sections = await Section.findAll({
+      attributes: ["id", "sectionName"],
+    });
+
+    const sectionMap = {};
+    sections.forEach((sec) => {
+      sectionMap[sec.id] = sec.sectionName;
+    });
+
+    const attendanceRecords = await ExamAttendance.findAll({
+      where: { classId, subjectId, examId },
+    });
+
+    const attendanceMap = {};
+    attendanceRecords.forEach((record) => {
+      attendanceMap[record.studentId] = record.status;
+    });
+
+    const result = students.map((student) => ({
+      id: student.id,
+      name: student.name,
+      photo: student.photo,
+      roll: student.roll,
+      email: student.email,
+      sectionId: student.section,
+      sectionName: sectionMap[student.section] || "N/A",
+      status: attendanceMap[student.id] || "Absent",
+    }));
+
+    res.json(result);
+  } catch (error) {
+    console.error("Error fetching attendance data:", error);
+    res.status(500).json({ error: "Failed to fetch student attendance" });
+  }
+
 };

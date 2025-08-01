@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
@@ -81,21 +84,31 @@ import ViewUattendanceDetail from "./pages/Attendance/ViewUattendanceDetail";
 
 import Exam from "./pages/Exam/Exam";
 import AddExam from "./pages/Exam/AddExam";
+
 import ExamSchedule from "./pages/Exam/ExamSchedule";
 import AddExamSchedule from "./pages/Exam/AddExamSchedule";
+
 import Grade from "./pages/Exam/Grade";
 import AddGrade from "./pages/Exam/AddGrade";
+
+import Eattendance from "./pages/Exam/Eattendance";
+import AddExamAttendance from "./pages/Exam/AddExamAttendance";
+
+import LeaveCategory from "./pages/Leave/LeaveCategory";
+import AddLeaveCategory from "./pages/Leave/AddLeaveCategory";
 
 export default function App() {
   return (
     <>
       <Router>
         <ScrollToTop />
+
         <Routes>
 
           <Route index element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route element={<AppLayout />}>
+          
             <Route 
               path="/dashboard/superadmin"
               element={
@@ -183,15 +196,12 @@ export default function App() {
             <Route path="/addAssignment" element={<AddAssignment />} />
             <Route path="/editassignment/:id" element={<AddAssignment />} />
 
-
             <Route path="/routine" element={<Routine />} />
             <Route path="/addRoutine" element={<AddRoutine />} />
-
 
             <Route path="/sattendance" element={<Sattendance />} />
             <Route path="/addStudentAttendance" element={<AddStudentAttendance />} />
             <Route path="/viewStudentDetails/:id" element={<ViewSattendanceDetail />} />
-
 
             <Route path="/tattendance" element={<Tattendance />} />
             <Route path="/addTeacherAttendance" element={<AddTeacherAttendance />} />
@@ -213,6 +223,18 @@ export default function App() {
             <Route path="/addGrade" element={<AddGrade />} />
             <Route path="/editGrade/:id" element={<AddGrade />} />
 
+            <Route path="/eattendance" element={<Eattendance />} />
+            <Route path="/addExamAttendance" element={<AddExamAttendance />} />
+
+
+
+
+            <Route path="/leave-category" element={<LeaveCategory />} />
+            <Route path="/addLeaveCategory" element={<AddLeaveCategory />} />
+            <Route path="/editleavecategory/:id" element={<AddLeaveCategory />} />
+
+
+            
             <Route path="/blank" element={<Blank />} />
             <Route path="/form-elements" element={<FormElements />} />
             <Route path="/basic-tables" element={<BasicTables />} />
@@ -230,8 +252,12 @@ export default function App() {
           <Route path="/signup" element={<SignUp />} />
 
           <Route path="*" element={<NotFound />} />
+          
         </Routes>
+        
       </Router>
+
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </>
   );
 }

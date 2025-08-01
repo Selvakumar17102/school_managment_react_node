@@ -21,4 +21,8 @@ router.get("/gradelist", examController.gradeList);
 router.get("/grade/:id", examController.getGradeById);
 router.put("/grade/:id", examController.updateGrade);
 
+router.get('/exam_attendance_students', examController.getAttendanceStudents);
+router.post("/save-exam-attendance", upload.none(), examController.saveAttendance);
+router.get("/get-students-attendance", examController.getStudentsAttendance);
+
 module.exports = router;

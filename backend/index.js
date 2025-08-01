@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const db = require('./models');
+
 const userRoutes = require('./routes/user.routes');
 const studentRoutes = require("./routes/student.routes");
 const parentRoutes = require("./routes/parent.routes");
@@ -9,6 +10,7 @@ const teacherRoutes = require("./routes/teacher.routes");
 const academicRoutes = require("./routes/academic.routes");
 const attendanceRoutes = require("./routes/attendance.routes");
 const examRoutes = require("./routes/exam.routes");
+const leaveRoutes = require("./routes/leave.routes");
 const path = require("path");
 
 const app = express();
@@ -34,6 +36,7 @@ app.use('/api', teacherRoutes);
 app.use("/api", academicRoutes);
 app.use("/api", attendanceRoutes);
 app.use("/api", examRoutes);
+app.use("/api", leaveRoutes);
 
 // Test DB and Sync Models
 db.sequelize.sync({ alter: true }).then(() => {
