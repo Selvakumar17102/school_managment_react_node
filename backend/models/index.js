@@ -37,6 +37,7 @@ const Exam = require("./exam.model.js")(sequelize, Sequelize);
 const ExamSchedule = require("./examschedule.model.js")(sequelize, Sequelize);
 const Grade = require("./grade.model.js")(sequelize, Sequelize);
 const ExamAttendance = require("./examattendance.model.js")(sequelize, Sequelize);
+const Mark = require("./mark.model.js")(sequelize, Sequelize);
 const LeaveCategory = require("./leavecategory.model.js")(sequelize, Sequelize);
 
 
@@ -58,6 +59,7 @@ db.Exam = Exam;
 db.ExamSchedule = ExamSchedule;
 db.Grade = Grade;
 db.ExamAttendance = ExamAttendance;
+db.Mark = Mark;
 db.LeaveCategory = LeaveCategory;
 
 module.exports = db;

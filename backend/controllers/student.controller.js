@@ -100,3 +100,37 @@ exports.updateStudent = async (req, res) => {
     res.status(500).json({ error: "Failed to update student", details: error.message });
   }
 };
+
+
+
+exports.getMarkStudents = async (req, res) => {
+  const { className, sectionName } = req.query;
+
+  try {
+    if (!className || !sectionName) {
+      return res.status(400).json({ error: "Missing parameters" });
+    }
+
+    const students = await Student.findAll({
+      where: { className, section: sectionName },
+      order: [["roll", "ASC"]],
+      attributes: ["id", "name", "roll", "photo"]
+    });
+
+    const response = students.map(s => ({
+      id: s.id,
+      name: s.name,
+      roll: s.roll,
+      photo: s.photo,
+      exam: "",
+      attendance: "",
+      classTest: "",
+      assignment: ""
+    }));
+
+    res.json(response);
+  } catch (error) {
+    console.error("Fetch students failed:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};

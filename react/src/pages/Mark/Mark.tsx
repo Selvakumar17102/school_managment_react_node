@@ -1,11 +1,11 @@
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
-import BasicTableExamSchedule from "../../components/tables/BasicTables/BasicTableExamSchedule";
+import BasicTableMark from "../../components/tables/BasicTables/BasicTableMark";
 import { useState,useEffect } from "react";
 import { useLocation  } from "react-router-dom";
 
 
-export default function ExamSchedule() {
+export default function Mark() {
 
     const location = useLocation();
     const [successMessage, setSuccessMessage] = useState("");
@@ -21,7 +21,7 @@ export default function ExamSchedule() {
 
   return (
     <>
-      <PageBreadcrumb pageTitle="Exam Schedule" />
+      <PageBreadcrumb pageTitle="Mark" />
 
       <div className="space-y-6">
         {successMessage && (
@@ -29,8 +29,8 @@ export default function ExamSchedule() {
             ✅ {successMessage}
           </div>
         )}
-        <ComponentCard title="Exam Schedule">
-          <BasicTableExamSchedule />
+        <ComponentCard title="Mark">
+          <BasicTableMark />
         </ComponentCard>
       </div>
     </>

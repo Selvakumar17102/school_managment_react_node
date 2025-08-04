@@ -94,6 +94,12 @@ import AddGrade from "./pages/Exam/AddGrade";
 import Eattendance from "./pages/Exam/Eattendance";
 import AddExamAttendance from "./pages/Exam/AddExamAttendance";
 
+import Mark from "./pages/Mark/Mark";
+import AddMark from "./pages/Mark/AddMark";
+import ViewMarkDetail from "./pages/Mark/ViewMarkDetail";
+
+
+
 import LeaveCategory from "./pages/Leave/LeaveCategory";
 import AddLeaveCategory from "./pages/Leave/AddLeaveCategory";
 
@@ -227,6 +233,9 @@ export default function App() {
             <Route path="/addExamAttendance" element={<AddExamAttendance />} />
 
 
+            <Route path="/mark" element={<Mark />} />
+            <Route path="/add-mark" element={<AddMark />} />
+            <Route path="/viewMarkDetails/:id" element={<ViewMarkDetail />} />
 
 
             <Route path="/leave-category" element={<LeaveCategory />} />

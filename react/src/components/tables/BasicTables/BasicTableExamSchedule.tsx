@@ -79,7 +79,7 @@ export default function BasicTableExamSchedule() {
   return (
     <div className="p-4">
       <div className="mb-4 flex items-center justify-between">
-        <a href="/add-exam-schedule" className="text-blue-600 font-semibold">
+        <a href="/addExamSchedule" className="text-blue-600 font-semibold">
           ➕ Add a exam schedule
         </a>
         <select

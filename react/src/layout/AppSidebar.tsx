@@ -101,8 +101,8 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     subItems: [
       { name: "Mark", path: "/mark", pro: false },
-      { name: "Mark Distribution", path: "/markpercentage", pro: false },
-      { name: "Promotion", path: "/promotion", pro: false },
+      { name: "Mark Distribution", path: "/markdistribution", pro: false },
+      { name: "Promotion", path: "/blank", pro: false },
     ],
   },
 

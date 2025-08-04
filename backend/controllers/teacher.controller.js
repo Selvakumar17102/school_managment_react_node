@@ -5,7 +5,6 @@ exports.createTeacher = async (req, res) => {
   const t = await User.sequelize.transaction();
 
   try {
-    // console.log(req.body);
 
     const { name, email, password } = req.body;
     const photo = req.file ? req.file.filename : null;

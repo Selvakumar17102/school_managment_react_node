@@ -5,9 +5,6 @@ exports.createParent = async (req, res) => {
   const t = await User.sequelize.transaction();
   try {
 
-
-    console.log(req.body);
-
     const {
       guardianName,
       fatherName,
