@@ -2,6 +2,22 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "../date-picker.tsx";
 
+type ClassItem = {
+  id: number;
+  className: string;
+};
+
+type SectionItem = {
+  id: number;
+  sectionName: string;
+};
+
+type SubjectItem = {
+  id: number;
+  subjectName: string;
+};
+
+
 export default function AddAssignment() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -18,9 +34,9 @@ export default function AddAssignment() {
     });
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-    const [classes, setClass] = useState([]);
-    const [sections, setSection] = useState([]);
-    const [subjects, setSubject] = useState([]);
+    const [classes, setClass] = useState<ClassItem[]>([]);
+    const [sections, setSection] = useState<SectionItem[]>([]);
+    const [subjects, setSubject] = useState<SubjectItem[]>([]);
 
     useEffect(() => {
         if (isEditMode) {

@@ -8,7 +8,6 @@ import PageMeta from "../../components/common/PageMeta";
 
 
 export default function SuperAdminDashboard() {
-  // return <h2>Welcome Superadmin</h2>;
 
   return (
     <>

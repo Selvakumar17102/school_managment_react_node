@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function UserInfoCard() {
 
-  const [user, setUser] = useState<{ name?: string; role?: string; location?: string }>({});
+  const [user, setUser] = useState<{ name?: string; email?: string; phone?: string; role?: string; location?: string }>({});
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

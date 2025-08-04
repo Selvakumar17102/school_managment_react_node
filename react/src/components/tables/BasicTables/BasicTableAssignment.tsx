@@ -313,7 +313,7 @@ export default function BasicTableAssignment() {
                             rel="noopener noreferrer"
                             className="text-blue-600 underline"
                           >
-                            {file}
+                            {file.name}
                           </a>
                         </div>
                       ))}

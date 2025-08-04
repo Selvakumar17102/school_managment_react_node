@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+type Teacher = {
+  id: number;
+  name: string;
+};
+
 export default function AddClasses() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -14,7 +19,8 @@ export default function AddClasses() {
     });
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-    const [teachers, setTeachers] = useState([]);
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
+
 
     // 🟡 Load class data in edit mode using the ID
     useEffect(() => {
