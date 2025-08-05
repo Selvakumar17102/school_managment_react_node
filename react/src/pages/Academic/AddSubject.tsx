@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import BASE_URL from "../../config";
 type Teacher = {
   id: number;
   name: string;
@@ -33,7 +33,7 @@ export default function AddSubject() {
     // 🟡 Load class data in edit mode using the ID
     useEffect(() => {
         if (isEditMode) {
-            fetch(`http://localhost:5000/api/subject/${id}`)
+            fetch(`${BASE_URL}/subject/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setForm({
@@ -53,14 +53,14 @@ export default function AddSubject() {
 
     // Load class list teacher list
     useEffect(() => {
-        fetch("http://localhost:5000/api/classlist")
+        fetch(`${BASE_URL}/classlist`)
             .then(res => res.json())
             .then(data => setClass(data))
             .catch(err => console.error("Failed to load teachers", err));
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/teacherlist")
+        fetch(`${BASE_URL}/teacherlist`)
             .then(res => res.json())
             .then(data => setTeachers(data))
             .catch(err => console.error("Failed to load teachers", err));
@@ -93,8 +93,8 @@ export default function AddSubject() {
 
         try {
             const url = isEditMode
-                ? `http://localhost:5000/api/subject/${id}`
-                : "http://localhost:5000/api/savesubject";
+                ? `${BASE_URL}/subject/${id}`
+                : `${BASE_URL}/savesubject`;
             const method = isEditMode ? "PUT" : "POST";
 
             const res = await fetch(url, {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
-
+import BASE_URL from "../../config";
 export default function EditTeacher() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -68,7 +68,7 @@ export default function EditTeacher() {
         if (value !== null) formData.append(key, value as any);
       });
 
-      await axios.put(`http://localhost:5000/api/updateteachers/${id}`, formData, {
+      await axios.put(`${BASE_URL}/updateteachers/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -82,7 +82,7 @@ export default function EditTeacher() {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/teachers/${id}`)
+    axios.get(`${BASE_URL}/teachers/${id}`)
       .then(res => setForm(prev => ({
         ...prev,
         ...res.data,

@@ -1,6 +1,7 @@
 import React, { useEffect,useState, useMemo } from "react";
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from "../../../config";
 
 import {
   Table,
@@ -40,7 +41,7 @@ export default function BasicTableFour() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/userlist");
+        const response = await fetch(`${BASE_URL}/userlist`);
         const data = await response.json();
 
         // console.log("sdsdsdsdsdsdsd",data);

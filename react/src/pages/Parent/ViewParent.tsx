@@ -1,6 +1,7 @@
 import { useParams,useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import BASE_URL from "../../config";
 
 
 export default function ViewParent() {
@@ -12,7 +13,7 @@ export default function ViewParent() {
     const [activeTab, setActiveTab] = useState("Profile");
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/parents/${id}`)
+    axios.get(`${BASE_URL}/parents/${id}`)
       .then(res => setParent(res.data))
       .catch(err => console.error(err));
   }, [id]);

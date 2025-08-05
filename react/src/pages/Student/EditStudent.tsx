@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import BASE_URL from "../../config";
 
 export default function EditStudent() {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ export default function EditStudent() {
         if (value !== null) formData.append(key, value as any);
       });
 
-      await axios.put(`http://localhost:5000/api/updatestudents/${id}`, formData, {
+      await axios.put(`${BASE_URL}/updatestudents/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -90,7 +91,7 @@ export default function EditStudent() {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/students/${id}`)
+    axios.get(`${BASE_URL}/students/${id}`)
       .then(res => setForm(prev => ({
         ...prev,
         ...res.data,

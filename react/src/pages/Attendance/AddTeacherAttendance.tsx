@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddTeacherAttendance() {
 
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function AddTeacherAttendance() {
     const handleAttendanceLoad = () => {
         if (!date) return;
 
-        fetch(`http://localhost:5000/api/teacherlist`)
+        fetch(`${BASE_URL}/teacherlist`)
         .then((res) => res.json())
         .then((data) => setTeachers(data));
     };
@@ -43,7 +43,7 @@ export default function AddTeacherAttendance() {
             }))
         };
 
-        fetch("http://localhost:5000/api/saveTattendance", {
+        fetch(`${BASE_URL}/saveTattendance`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

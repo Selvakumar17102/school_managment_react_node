@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddTeacher() {
     const navigate = useNavigate();
 
@@ -70,7 +70,7 @@ export default function AddTeacher() {
             formData.append(key, (form as any)[key]);
         }
         try {
-            const res = await fetch("http://localhost:5000/api/teacher", {
+            const res = await fetch(`${BASE_URL}/teacher`, {
             method: "POST",
             body: formData,
             });

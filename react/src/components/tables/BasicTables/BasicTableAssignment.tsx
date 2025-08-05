@@ -2,6 +2,8 @@ import React, { useEffect,useState, useMemo } from "react";
 import { Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import BASE_URL from "../../../config";
+
 import {
   Table,
   TableBody,
@@ -44,7 +46,7 @@ export default function BasicTableAssignment() {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/assignmentlist");
+        const response = await fetch(`${BASE_URL}/assignmentlist`);
         const data = await response.json();
       
         const formattedData: Order[] = data.map((assignments: any) => ({

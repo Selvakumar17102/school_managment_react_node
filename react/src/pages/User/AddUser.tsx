@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import BASE_URL from "../../config";
 export default function AddUser() {
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ export default function AddUser() {
     useEffect(() => {
     const fetchRoles = async () => {
         try {
-        const res = await axios.get<Role[]>("http://localhost:5000/api/roles");
+        const res = await axios.get<Role[]>(`${BASE_URL}/roles`);
         setRoles(res.data);
         } catch (err) {
         console.error("Failed to load roles", err);
@@ -91,7 +91,7 @@ export default function AddUser() {
             formData.append(key, (form as any)[key]);
         }
         try {
-            const res = await fetch("http://localhost:5000/api/user", {
+            const res = await fetch(`${BASE_URL}/user`, {
             method: "POST",
             body: formData,
             });

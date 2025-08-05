@@ -1,7 +1,7 @@
 import { useParams,useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import BASE_URL from "../../config";
 
 export default function ViewTeacher() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function ViewTeacher() {
     const [activeTab, setActiveTab] = useState("Profile");
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/teachers/${id}`)
+    axios.get(`${BASE_URL}/teachers/${id}`)
       .then(res => setTeacher(res.data))
       .catch(err => console.error(err));
   }, [id]);

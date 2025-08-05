@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import BASE_URL from "../../config";
 
 type Teacher = {
   id: number;
@@ -25,7 +26,7 @@ export default function AddClasses() {
     // 🟡 Load class data in edit mode using the ID
     useEffect(() => {
         if (isEditMode) {
-            fetch(`http://localhost:5000/api/class/${id}`)
+            fetch(`${BASE_URL}/class/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setForm({
@@ -41,7 +42,7 @@ export default function AddClasses() {
 
     // Load teacher list
     useEffect(() => {
-        fetch("http://localhost:5000/api/teacherlist")
+        fetch(`${BASE_URL}/teacherlist`)
             .then(res => res.json())
             .then(data => setTeachers(data))
             .catch(err => console.error("Failed to load teachers", err));
@@ -71,8 +72,8 @@ export default function AddClasses() {
 
         try {
             const url = isEditMode
-                ? `http://localhost:5000/api/class/${id}`
-                : "http://localhost:5000/api/saveclass";
+                ? `${BASE_URL}/class/${id}`
+                : `${BASE_URL}/saveclass`;
             const method = isEditMode ? "PUT" : "POST";
 
             const res = await fetch(url, {

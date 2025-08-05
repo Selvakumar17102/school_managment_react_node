@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddLeaveCategory() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -13,7 +13,7 @@ export default function AddLeaveCategory() {
 
     useEffect(() => {
         if (isEditMode) {
-            fetch(`http://localhost:5000/api/leavecategory/${id}`)
+            fetch(`${BASE_URL}/leavecategory/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setForm({
@@ -45,8 +45,8 @@ export default function AddLeaveCategory() {
 
         try {
             const url = isEditMode
-                ? `http://localhost:5000/api/leavecategory/${id}`
-                : "http://localhost:5000/api/saveleavecategory";
+                ? `${BASE_URL}/leavecategory/${id}`
+                : `${BASE_URL}/saveleavecategory`;
             const method = isEditMode ? "PUT" : "POST";
 
             const res = await fetch(url, {

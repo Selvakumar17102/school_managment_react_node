@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddStudent() {
     const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export default function AddStudent() {
 
 
     useEffect(() => {
-      fetch("http://localhost:5000/api/classlist")
+      fetch(`${BASE_URL}/classlist`)
         .then(res => res.json())
         .then(setClasses)
         .catch(err => console.error("Failed to fetch class list", err));
@@ -62,7 +62,7 @@ export default function AddStudent() {
     }));
 
     useEffect(() => {
-      fetch("http://localhost:5000/api/sectionlist")
+      fetch(`${BASE_URL}/sectionlist`)
         .then((res) => res.json())
         .then(setSections)
         .catch((err) => console.error("Failed to load sections", err));
@@ -75,7 +75,7 @@ export default function AddStudent() {
 
 
     useEffect(() => {
-      fetch("http://localhost:5000/api/parentslist")
+      fetch(`${BASE_URL}/parentslist`)
         .then((res) => res.json())
         .then(setGuardianTypes)
         .catch((err) => console.error("Failed to load guardian types", err));
@@ -137,7 +137,7 @@ export default function AddStudent() {
             formData.append(key, (form as any)[key]);
         }
         try {
-            const res = await fetch("http://localhost:5000/api/students", {
+            const res = await fetch(`${BASE_URL}/students`, {
             method: "POST",
             body: formData,
             });

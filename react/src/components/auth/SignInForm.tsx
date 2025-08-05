@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import BASE_URL from "../../config";
 
 import { Link } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
@@ -71,7 +72,7 @@ export default function SignInForm() {
     if (Object.keys(newErrors).length > 0) return;
 
     try {
-      const res = await axios.post("http://localhost:5000/api/login", {
+      const res = await axios.post(`${BASE_URL}/login`, {
         email,
         password,
       });

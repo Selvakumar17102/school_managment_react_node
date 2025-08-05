@@ -1,7 +1,7 @@
 import { useParams,useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import BASE_URL from "../../config";
 
 export default function ViewUser() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function ViewUser() {
     const [activeTab, setActiveTab] = useState("Profile");
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/users/${id}`)
+    axios.get(`${BASE_URL}/users/${id}`)
       .then(res => setUser(res.data))
       .catch(err => console.error(err));
   }, [id]);

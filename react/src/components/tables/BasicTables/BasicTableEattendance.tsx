@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import BASE_URL from "../../../config";
 
 
 export default function BasicTableEattendance() {
@@ -60,15 +60,15 @@ export default function BasicTableEattendance() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/examlist").then((res) => res.json()).then(setExams);
-    fetch("http://localhost:5000/api/classlist").then((res) => res.json()).then(setClasses);
-    fetch("http://localhost:5000/api/subjectlist").then((res) => res.json()).then(setSubjects);
+    fetch(`${BASE_URL}/examlist`).then((res) => res.json()).then(setExams);
+    fetch(`${BASE_URL}/classlist`).then((res) => res.json()).then(setClasses);
+    fetch(`${BASE_URL}/subjectlist`).then((res) => res.json()).then(setSubjects);
   }, []);
 
   useEffect(() => {
     if (!selectedClass) return;
 
-    fetch(`http://localhost:5000/api/sectionlists/${selectedClass}`)
+    fetch(`${BASE_URL}/sectionlists/${selectedClass}`)
       .then(res => res.json())
       .then(setSections)
       .catch(console.error);
@@ -79,7 +79,7 @@ export default function BasicTableEattendance() {
     if (!validateFields()) return;
 
     fetch(
-      `http://localhost:5000/api/get-students-attendance?classId=${selectedClass}&subjectId=${selectedSubject}&examId=${selectedExam}`
+      `${BASE_URL}/get-students-attendance?classId=${selectedClass}&subjectId=${selectedSubject}&examId=${selectedExam}`
     )
       .then((res) => res.json())
       .then((data) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 
 
 type Option = {
@@ -49,7 +49,7 @@ const AddExamSchedule: React.FC<Props> = ({ isEditMode = false }) => {
 
     useEffect(() => {
       if (isEditMode && id) {
-        fetch(`http://localhost:5000/api/editexamschedule/${id}`)
+        fetch(`${BASE_URL}/editexamschedule/${id}`)
           .then((res) => res.json())
           .then((data) => {
             setForm({
@@ -72,19 +72,19 @@ const AddExamSchedule: React.FC<Props> = ({ isEditMode = false }) => {
 
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/classlist")
+        fetch(`${BASE_URL}/classlist`)
         .then((res) => res.json())
         .then((data) => setClassOptions(data));
 
-        fetch("http://localhost:5000/api/examlist")
+        fetch(`${BASE_URL}/examlist`)
         .then((res) => res.json())
         .then((data) => setExamOptions(data));
 
-        fetch("http://localhost:5000/api/sectionlist")
+        fetch(`${BASE_URL}/sectionlist`)
         .then((res) => res.json())
         .then((data) => setSectionOptions(data));
 
-        fetch("http://localhost:5000/api/subjectlist")
+        fetch(`${BASE_URL}/subjectlist`)
         .then((res) => res.json())
         .then((data) => setSubjectOptions(data));
     }, []);
@@ -116,8 +116,8 @@ const AddExamSchedule: React.FC<Props> = ({ isEditMode = false }) => {
 
       try {
         const url = isEditMode
-          ? `http://localhost:5000/api/updateexamschedule/${id}`
-          : "http://localhost:5000/api/saveexamschedule";
+          ? `${BASE_URL}/updateexamschedule/${id}`
+          : `${BASE_URL}/saveexamschedule`;
 
         const method = isEditMode ? "PUT" : "POST";
 

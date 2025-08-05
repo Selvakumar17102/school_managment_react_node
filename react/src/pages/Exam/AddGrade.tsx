@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddGrade() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -19,7 +19,7 @@ export default function AddGrade() {
     // 🟡 Load class data in edit mode using the ID
     useEffect(() => {
         if (isEditMode) {
-            fetch(`http://localhost:5000/api/grade/${id}`)
+            fetch(`${BASE_URL}/grade/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setForm({
@@ -59,8 +59,8 @@ export default function AddGrade() {
 
         try {
             const url = isEditMode
-                ? `http://localhost:5000/api/grade/${id}`
-                : "http://localhost:5000/api/savegrade";
+                ? `${BASE_URL}/grade/${id}`
+                : `${BASE_URL}/savegrade`;
             const method = isEditMode ? "PUT" : "POST";
 
             const res = await fetch(url, {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import BASE_URL from "../../config";
 type ClassItem = {
   id: number;
   className: string;
@@ -25,7 +25,7 @@ export default function AddSyllabus() {
     // 🟡 Load class data in edit mode using the ID
     useEffect(() => {
         if (isEditMode) {
-            fetch(`http://localhost:5000/api/syllabus/${id}`)
+            fetch(`${BASE_URL}/syllabus/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setForm({
@@ -40,7 +40,7 @@ export default function AddSyllabus() {
     }, [isEditMode, id]);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/classlist")
+        fetch(`${BASE_URL}/classlist`)
             .then(res => res.json())
             .then(data => setClass(data))
             .catch(err => console.error("Failed to load classes", err));
@@ -75,8 +75,8 @@ export default function AddSyllabus() {
 
         try {
             const url = isEditMode
-                ? `http://localhost:5000/api/syllabus/${id}`
-                : "http://localhost:5000/api/savesyllabus";
+                ? `${BASE_URL}/syllabus/${id}`
+                : `${BASE_URL}/savesyllabus`;
             const method = isEditMode ? "PUT" : "POST";
 
             const formData = new FormData();

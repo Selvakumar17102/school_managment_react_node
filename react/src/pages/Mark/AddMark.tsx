@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 
 type ClassOption = { id: string; className: string };
 type ExamOption = { id: string; examName: string };
@@ -46,26 +46,26 @@ export default function AddMark() {
     const [subjects, setSubjects] = useState<SubjectOption[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/classlist")
+    fetch(`${BASE_URL}/classlist`)
       .then((res) => res.json())
       .then(setClasses);
 
-    fetch("http://localhost:5000/api/examlist")
+    fetch(`${BASE_URL}/examlist`)
       .then((res) => res.json())
       .then(setExams);
 
-    // fetch("http://localhost:5000/api/sectionlist")
+    // fetch(`${BASE_URL}/sectionlist`)
     //   .then((res) => res.json())
     //   .then(setSections);
 
-    fetch("http://localhost:5000/api/subjectlist")
+    fetch(`${BASE_URL}/subjectlist`)
       .then((res) => res.json())
       .then(setSubjects);
   }, []);
 
   useEffect(() => {
     if (selectedClassId) {
-      fetch(`http://localhost:5000/api/sectionlists/${selectedClassId}`)
+      fetch(`${BASE_URL}/sectionlists/${selectedClassId}`)
         .then((res) => res.json())
         .then(setSections);
     } else {
@@ -82,7 +82,7 @@ export default function AddMark() {
 
         try {
             const res = await fetch(
-            `http://localhost:5000/api/get-mark-students?className=${selectedClass}&examName=${selectedExam}&sectionName=${selectedSection}&subjectName=${selectedSubject}`
+            `${BASE_URL}/get-mark-students?className=${selectedClass}&examName=${selectedExam}&sectionName=${selectedSection}&subjectName=${selectedSubject}`
             );
 
             const data = await res.json();
@@ -119,7 +119,7 @@ export default function AddMark() {
         };
 
         try {
-            const res = await fetch("http://localhost:5000/api/submit-marks", {
+            const res = await fetch(`${BASE_URL}/submit-marks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

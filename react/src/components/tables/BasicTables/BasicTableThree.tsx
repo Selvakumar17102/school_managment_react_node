@@ -1,7 +1,7 @@
 import React, { useEffect,useState, useMemo } from "react";
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import BASE_URL from "../../../config";
 import {
   Table,
   TableBody,
@@ -42,7 +42,7 @@ export default function BasicTableThree() {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/teacherlist");
+        const response = await fetch(`${BASE_URL}/teacherlist`);
         const data = await response.json();
       
         const formattedData: Order[] = data.map((teacher: any) => ({

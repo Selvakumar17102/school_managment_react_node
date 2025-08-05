@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddParent() {
     const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ export default function AddParent() {
             formData.append(key, (form as any)[key]);
         }
         try {
-            const res = await fetch("http://localhost:5000/api/parents", {
+            const res = await fetch(`${BASE_URL}/parents`, {
             method: "POST",
             body: formData,
             });

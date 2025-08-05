@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import BASE_URL from "../../config";
 
 type Mark = {
   subjectName: string;
@@ -25,12 +26,12 @@ export default function ViewMarkDetail() {
   const [groupedMarks, setGroupedMarks] = useState<{ [examName: string]: Mark[] }>({});
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/view-student-profile/${id}`)
+    fetch(`${BASE_URL}/view-student-profile/${id}`)
       .then(res => res.json())
       .then(data => setStudent(data))
       .catch(err => console.error("Profile error:", err));
 
-    fetch(`http://localhost:5000/api/view-mark-details/${id}`)
+    fetch(`${BASE_URL}/view-mark-details/${id}`)
       .then(res => res.json())
       .then(data => {
         

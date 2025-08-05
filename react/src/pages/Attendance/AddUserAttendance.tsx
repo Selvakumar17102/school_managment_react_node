@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddUserAttendance() {
 
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function AddUserAttendance() {
     const handleAttendanceLoad = () => {
         if (!date) return;
 
-        fetch(`http://localhost:5000/api/userlist`)
+        fetch(`${BASE_URL}/userlist`)
         .then((res) => res.json())
         .then((data) => setUsers(data));
     };
@@ -43,7 +43,7 @@ export default function AddUserAttendance() {
             }))
         };
 
-        fetch("http://localhost:5000/api/saveUattendance", {
+        fetch(`${BASE_URL}/saveUattendance`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

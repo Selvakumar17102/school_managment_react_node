@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import BASE_URL from "../../config";
 
 export default function AddRoutine() {
     const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function AddRoutine() {
 
     useEffect(() => {
         if (isEditMode) {
-            // fetch(`http://localhost:5000/api/syllabus/${id}`)
+            // fetch(`${BASE_URL}/syllabus/${id}`)
             //     .then(res => res.json())
             //     .then(data => {
             //         setForm({
@@ -68,7 +69,7 @@ export default function AddRoutine() {
 
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/classlist")
+        fetch(`${BASE_URL}/classlist`)
             .then((res) => res.json())
             .then((data) => {
             const formatted = data.map((item: any) => ({
@@ -81,7 +82,7 @@ export default function AddRoutine() {
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/subjectlist")
+        fetch(`${BASE_URL}/subjectlist`)
             .then((res) => res.json())
             .then((data) => {
                 const formatted = data.map((item: any) => ({
@@ -91,7 +92,7 @@ export default function AddRoutine() {
                 setSubjects(formatted);
             });
 
-        fetch("http://localhost:5000/api/sectionlist")
+        fetch(`${BASE_URL}/sectionlist`)
             .then((res) => res.json())
             .then((data) => {
                 const formatted = data.map((item: any) => ({
@@ -101,7 +102,7 @@ export default function AddRoutine() {
                 setSections(formatted);
             });
 
-        fetch("http://localhost:5000/api/teacherlist")
+        fetch(`${BASE_URL}/teacherlist`)
             .then((res) => res.json())
             .then((data) => {
                 const formatted = data.map((item: any) => ({
@@ -145,8 +146,8 @@ export default function AddRoutine() {
 
         try {
             const url = isEditMode
-            ? `http://localhost:5000/api/routines/${id}`
-            : "http://localhost:5000/api/saveroutines";
+            ? `${BASE_URL}/routines/${id}`
+            : `${BASE_URL}/saveroutines`;
             const method = isEditMode ? "PUT" : "POST";
 
             const res = await fetch(url, {

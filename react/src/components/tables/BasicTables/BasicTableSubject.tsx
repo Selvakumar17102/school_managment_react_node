@@ -1,7 +1,7 @@
 import React, { useEffect,useState, useMemo } from "react";
 import { Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import BASE_URL from "../../../config";
 import {
   Table,
   TableBody,
@@ -45,7 +45,7 @@ export default function BasicTableSubject() {
   useEffect(() => {
     const fetchsubjects = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/subjectlist");
+        const response = await fetch(`${BASE_URL}/subjectlist`);
         const data = await response.json();
       
         const formattedData: Order[] = data.map((subjects: any) => ({

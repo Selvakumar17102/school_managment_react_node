@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
+import BASE_URL from "../../config";
 
 export default function AddExamAttendance() {
 
@@ -74,22 +75,22 @@ export default function AddExamAttendance() {
 
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/examlist")
+        fetch(`${BASE_URL}/examlist`)
         .then((res) => res.json())
         .then(setExams);
 
-        fetch("http://localhost:5000/api/classlist")
+        fetch(`${BASE_URL}/classlist`)
         .then((res) => res.json())
         .then(setClasses);
 
-        fetch("http://localhost:5000/api/subjectlist")
+        fetch(`${BASE_URL}/subjectlist`)
         .then((res) => res.json())
         .then(setSubjects);
     }, []);
 
     useEffect(() => {
         if (selectedClass) {
-        fetch(`http://localhost:5000/api/sectionlists/${selectedClass}`)
+        fetch(`${BASE_URL}/sectionlists/${selectedClass}`)
             .then((res) => res.json())
             .then(setSections);
         } else {
@@ -101,7 +102,7 @@ export default function AddExamAttendance() {
         if (!validateFields()) return;
 
         fetch(
-        `http://localhost:5000/api/exam_attendance_students?className=${selectedClass}&section=${selectedSection}`
+        `${BASE_URL}/exam_attendance_students?className=${selectedClass}&section=${selectedSection}`
         )
         .then((res) => res.json())
         .then((data) => {
@@ -130,7 +131,7 @@ export default function AddExamAttendance() {
         };
 
         try {
-            const res = await fetch("http://localhost:5000/api/save-exam-attendance", {
+            const res = await fetch(`${BASE_URL}/save-exam-attendance`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

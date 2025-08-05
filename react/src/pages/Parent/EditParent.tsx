@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import BASE_URL from "../../config";
 
 export default function EditParent() {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export default function EditParent() {
         if (value !== null) formData.append(key, value as any);
       });
 
-      await axios.put(`http://localhost:5000/api/updateparents/${id}`, formData, {
+      await axios.put(`${BASE_URL}/updateparents/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -74,7 +75,7 @@ export default function EditParent() {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/parents/${id}`)
+    axios.get(`${BASE_URL}/parents/${id}`)
       .then(res => setForm(prev => ({
         ...prev,
         ...res.data,

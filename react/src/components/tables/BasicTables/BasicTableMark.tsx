@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../../../config";
 
 type Student = {
   id: number;
@@ -37,7 +38,7 @@ export default function BasicTableMark() {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/classlist")
+    fetch(`${BASE_URL}/classlist`)
       .then(res => res.json())
       .then(setClasses)
       .catch(console.error);
@@ -46,12 +47,12 @@ export default function BasicTableMark() {
   useEffect(() => {
     if (!selectedClass) return;
 
-    fetch(`http://localhost:5000/api/studentsattendancelist?className=${selectedClass}`)
+    fetch(`${BASE_URL}/studentsattendancelist?className=${selectedClass}`)
       .then(res => res.json())
       .then(setStudents)
       .catch(console.error);
 
-    fetch(`http://localhost:5000/api/sectionlists/${selectedClass}`)
+    fetch(`${BASE_URL}/sectionlists/${selectedClass}`)
       .then(res => res.json())
       .then(setSections)
       .catch(console.error);
@@ -64,7 +65,7 @@ export default function BasicTableMark() {
       if (!selectedClass) return;
       if (!selectedSection) return;
   
-      fetch(`http://localhost:5000/api/studentsattendancelist?className=${selectedClass}&section=${selectedSection}`)
+      fetch(`${BASE_URL}/studentsattendancelist?className=${selectedClass}&section=${selectedSection}`)
         .then(res => res.json())
         .then(setStudents)
         .catch(console.error);

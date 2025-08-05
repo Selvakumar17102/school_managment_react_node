@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../../../config";
 
 type ClassOption = {
   id: string;
@@ -38,21 +39,21 @@ export default function BasicTableExamSchedule() {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/classlist")
+    fetch(`${BASE_URL}/classlist`)
       .then((res) => res.json())
       .then(setClassOptions);
   }, []);
 
   useEffect(() => {
     if (classId) {
-      fetch(`http://localhost:5000/api/examschedulelist/${classId}`)
+      fetch(`${BASE_URL}/examschedulelist/${classId}`)
         .then((res) => res.json())
         .then((data) => {
           setExamSchedules(data);
           setFilteredSchedules(data);
         });
 
-      fetch(`http://localhost:5000/api/getsectionsbyclass/${classId}`)
+      fetch(`${BASE_URL}/getsectionsbyclass/${classId}`)
         .then((res) => res.json())
         .then(setSectionOptions);
 

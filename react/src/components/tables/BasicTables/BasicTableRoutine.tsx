@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-
+import BASE_URL from "../../../config";
 
 
 
@@ -44,18 +44,18 @@ export default function BasicTableRoutine() {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/classlist")
+    fetch(`${BASE_URL}/classlist`)
       .then((res) => res.json())
       .then((data) => setClasses(data));
   }, []);
 
   useEffect(() => {
     if (classId) {
-      fetch(`http://localhost:5000/api/sectionlist/${classId}`)
+      fetch(`${BASE_URL}/sectionlist/${classId}`)
         .then((res) => res.json())
         .then(setSections);
 
-      fetch(`http://localhost:5000/api/routineclass/${classId}`)
+      fetch(`${BASE_URL}/routineclass/${classId}`)
         .then((res) => res.json())
         .then(setRoutines);
 

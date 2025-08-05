@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddStudentAttendance() {
 
     const navigate = useNavigate();
@@ -34,14 +34,14 @@ export default function AddStudentAttendance() {
     const [attendance, setAttendance] = useState<{ [studentId: string]: string }>({});
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/classlist")
+        fetch(`${BASE_URL}/classlist`)
         .then((res) => res.json())
         .then((data) => setClasses(data));
     }, []);
 
     useEffect(() => {
         if (classId) {
-        fetch(`http://localhost:5000/api/sectionlists/${classId}`)
+        fetch(`${BASE_URL}/sectionlists/${classId}`)
             .then((res) => res.json())
             .then((data) => setSections(data));
         }
@@ -50,7 +50,7 @@ export default function AddStudentAttendance() {
     const handleAttendanceLoad = () => {
         if (!classId || !sectionId || !date) return;
 
-        fetch(`http://localhost:5000/api/studentlists/${classId}/${sectionId}`)
+        fetch(`${BASE_URL}/studentlists/${classId}/${sectionId}`)
         .then((res) => res.json())
         .then((data) => setStudents(data));
     };
@@ -84,7 +84,7 @@ export default function AddStudentAttendance() {
             }))
         };
 
-        fetch("http://localhost:5000/api/saveSattendance", {
+        fetch(`${BASE_URL}/saveSattendance`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

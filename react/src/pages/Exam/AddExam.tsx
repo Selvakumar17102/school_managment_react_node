@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import BASE_URL from "../../config";
 export default function AddExam() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -17,7 +17,7 @@ export default function AddExam() {
     // 🟡 Load class data in edit mode using the ID
     useEffect(() => {
         if (isEditMode) {
-            fetch(`http://localhost:5000/api/exam/${id}`)
+            fetch(`${BASE_URL}/exam/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setForm({
@@ -53,8 +53,8 @@ export default function AddExam() {
 
         try {
             const url = isEditMode
-                ? `http://localhost:5000/api/exam/${id}`
-                : "http://localhost:5000/api/saveexam";
+                ? `${BASE_URL}/exam/${id}`
+                : `${BASE_URL}/saveexam`;
             const method = isEditMode ? "PUT" : "POST";
 
             const res = await fetch(url, {

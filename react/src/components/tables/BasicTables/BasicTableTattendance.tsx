@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../../config";
 
 type Teacher = {
   id: number;
@@ -19,7 +19,7 @@ export default function BasicTableTattendance() {
 
   useEffect(() => {
 
-    fetch(`http://localhost:5000/api/teacherlist`)
+    fetch(`${BASE_URL}/teacherlist`)
       .then(res => res.json())
       .then(setTeachers)
       .catch(console.error);

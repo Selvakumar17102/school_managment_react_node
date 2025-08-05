@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "../date-picker.tsx";
+import BASE_URL from "../../config";
 
 type ClassItem = {
   id: number;
@@ -40,7 +41,7 @@ export default function AddAssignment() {
 
     useEffect(() => {
         if (isEditMode) {
-            fetch(`http://localhost:5000/api/assignment/${id}`)
+            fetch(`${BASE_URL}/assignment/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setForm({
@@ -58,19 +59,19 @@ export default function AddAssignment() {
     }, [isEditMode, id]);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/classlist")
+        fetch(`${BASE_URL}/classlist`)
             .then(res => res.json())
             .then(data => setClass(data))
             .catch(err => console.error("Failed to load classes", err));
     }, []);
     useEffect(() => {
-        fetch("http://localhost:5000/api/sectionlist")
+        fetch(`${BASE_URL}/sectionlist`)
             .then(res => res.json())
             .then(data => setSection(data))
             .catch(err => console.error("Failed to load section", err));
     }, []);
     useEffect(() => {
-        fetch("http://localhost:5000/api/subjectlist")
+        fetch(`${BASE_URL}/subjectlist`)
             .then(res => res.json())
             .then(data => setSubject(data))
             .catch(err => console.error("Failed to load section", err));
@@ -106,8 +107,8 @@ export default function AddAssignment() {
 
         try {
             const url = isEditMode
-                ? `http://localhost:5000/api/assignment/${id}`
-                : "http://localhost:5000/api/saveAssignment";
+                ? `${BASE_URL}/assignment/${id}`
+                : `${BASE_URL}/saveAssignment`;
             const method = isEditMode ? "PUT" : "POST";
 
             const formData = new FormData();

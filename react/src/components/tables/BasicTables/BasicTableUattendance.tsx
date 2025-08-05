@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../../config";
 
 type User = {
   id: number;
@@ -20,7 +20,7 @@ export default function BasicTableUattendance() {
 
   useEffect(() => {
 
-    fetch(`http://localhost:5000/api/userlist`)
+    fetch(`${BASE_URL}/userlist`)
       .then(res => res.json())
       .then(setUsers)
       .catch(console.error);

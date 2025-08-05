@@ -1,6 +1,7 @@
 import React, { useEffect,useState, useMemo } from "react";
 import { Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from "../../../config";
 
 import {
   Table,
@@ -42,7 +43,7 @@ export default function BasicTableGrade() {
   useEffect(() => {
     const fetchGrades = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/gradelist");
+        const response = await fetch(`${BASE_URL}/gradelist`);
         const data = await response.json();
       
         const formattedData: Order[] = data.map((grades: any) => ({

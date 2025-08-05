@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import BASE_URL from "../../config";
 type AttendanceRecord = {
     [month: string]: {
         [day: number]: string;
@@ -18,11 +18,11 @@ export default function ViewUattendanceDetail() {
     const [summary, setSummary] = useState<any>({});
 
     useEffect(() => {
-    axios.get(`http://localhost:5000/api/users/${id}`)
+    axios.get(`${BASE_URL}/users/${id}`)
       .then(res => setUser(res.data))
       .catch(err => console.error(err));
 
-    axios.get(`http://localhost:5000/api/uattendance/${id}`)
+    axios.get(`${BASE_URL}/uattendance/${id}`)
       .then(res => {
         setAttendance(res.data.attendance);
         setSummary(res.data.summary);

@@ -2,6 +2,9 @@ import React, { useEffect,useState, useMemo } from "react";
 import { Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import BASE_URL from "../../../config";
+
+
 import {
   Table,
   TableBody,
@@ -40,7 +43,7 @@ export default function BasicTableExam() {
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/examlist");
+        const response = await fetch(`${BASE_URL}/examlist`);
         const data = await response.json();
       
         const formattedData: Order[] = data.map((exams: any) => ({
