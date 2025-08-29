@@ -11,8 +11,7 @@ import {
   HorizontaLDots,
   ListIcon,
   PageIcon,
-  // PieChartIcon,
-  // PlugInIcon,
+  PencilIcon,
   TableIcon,
   UserCircleIcon,
 } from "../icons";
@@ -102,7 +101,7 @@ const navItems: NavItem[] = [
     subItems: [
       { name: "Mark", path: "/mark", pro: false },
       { name: "Mark Distribution", path: "/markdistribution", pro: false },
-      { name: "Promotion", path: "/blank", pro: false },
+      { name: "Promotion", path: "/promotion", pro: false },
     ],
   },
 
@@ -111,10 +110,72 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     subItems: [
       { name: "Leave Category", path: "/leave-category", pro: false },
-      { name: "Leave Assign", path: "/blank", pro: false },
-      // { name: "Leave Apply", path: "/blank", pro: false },
-      // { name: "Leave Application", path: "/blank", pro: false },
+      { name: "Leave Assign", path: "/leaveassign", pro: false },
+      { name: "Leave Apply", path: "#", pro: false },
+      { name: "Leave Application", path: "#", pro: false },
     ],
+  },
+
+  {
+    name: "Asset Management",
+    icon: <TableIcon />,
+    subItems: [
+      { name: "Vendor", path: "#", pro: false },
+      { name: "Location", path: "#", pro: false },
+      { name: "Asset Category", path: "#", pro: false },
+      { name: "Asset", path: "#", pro: false },
+      { name: "Asset Assignment", path: "#", pro: false },
+      { name: "Purchase", path: "#", pro: false },
+    ],
+  },
+  
+  {
+    name: "Library",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Member", path: "#", pro: false },
+      { name: "Books", path: "#", pro: false },
+      { name: "Issue", path: "#", pro: false },
+      { name: "E-Book", path: "#", pro: false },
+    ],
+  },
+  {
+    name: "Transport",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Transport", path: "#", pro: false },
+      { name: "Transport Member", path: "#", pro: false },
+    ],
+  },
+  {
+    name: "Hostel",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Hostel", path: "#", pro: false },
+      { name: "Hostel Category", path: "#", pro: false },
+      { name: "Hostel Member", path: "#", pro: false },
+    ],
+  },
+
+  {
+    name: "Administrator",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Academic Year", path: "#", pro: false },
+      { name: "Student Group", path: "#", pro: false },
+      { name: "Complain", path: "#", pro: false },
+      { name: "Reset Password", path: "#", pro: false },
+      { name: "Import", path: "#", pro: false },
+      { name: "Backup", path: "#", pro: false },
+      { name: "Role", path: "#", pro: false },
+      { name: "Permission", path: "#", pro: false },
+    ],
+  },
+
+  {
+    icon: <PencilIcon />,
+    name: "General Setting",
+    path: "#",
   },
   
   // {
@@ -126,14 +187,6 @@ const navItems: NavItem[] = [
   //   name: "Tables",
   //   icon: <TableIcon />,
   //   subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
-  // },
-  // {
-  //   name: "Pages",
-  //   icon: <PageIcon />,
-  //   subItems: [
-  //     { name: "Blank Page", path: "/blank", pro: false },
-  //     { name: "404 Error", path: "/error-404", pro: false },
-  //   ],
   // },
 ];
 

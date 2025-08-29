@@ -1,4 +1,4 @@
-const { Mark, Subject, Exam, Student, Grade,Class,Section } = require('../models');
+const { Mark, Subject, Exam, Student, Grade,Class,Section,MarkDistribution } = require('../models');
 
 const db = require("../models");
 const sequelize = db.sequelize;
@@ -71,7 +71,6 @@ exports.getStudentProfile = async (req, res) => {
   }
 };
 
-
 exports.getStudentMarkDetails = async (req, res) => {
   const studentId = req.params.id;
 
@@ -121,3 +120,62 @@ exports.getStudentMarkDetails = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.createMarkdistribution = async (req, res) => {
+  const t = await MarkDistribution.sequelize.transaction();
+  try {
+    const markdistributions = await MarkDistribution.create({
+      ...req.body
+    }, { transaction: t });
+    await t.commit();
+
+    res.status(201).json({
+      message: "mark distributions created successfully",
+      markdistributions
+    });
+
+  } catch (error) {
+    await t.rollback();
+    console.error("Error creating mark distributions:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+exports.markDistributionList = async (req, res) => {
+  try {
+    const markDistributions = await MarkDistribution.findAll();
+
+    res.status(200).json(markDistributions);
+  } catch (error) {
+    console.error("Error fetching markDistributions:", error);
+    res.status(500).json({ error: "Failed to fetch markDistributions list" });
+  }
+};
+
+exports.getMarkDistributionById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const cls = await MarkDistribution.findByPk(id);
+        if (!cls) return res.status(404).json({ error: "MarkDistribution not found" });
+        res.json(cls);
+    } catch (error) {
+        console.error("Fetch error:", error);
+        res.status(500).json({ error: "Failed to fetch MarkDistribution" });
+    }
+};
+
+exports.updateMarkDistribution = async (req, res) => {
+    const markDistributionId = req.params.id;
+    try {
+        const updated = await MarkDistribution.update(req.body, { where: { id: markDistributionId } });
+        if (updated[0] === 1) {
+            res.json({ message: "MarkDistribution updated successfully" });
+        } else {
+            res.status(404).json({ error: "MarkDistribution not found" });
+        }
+    } catch (error) {
+        console.error("Error updating MarkDistribution:", error);
+        res.status(500).json({ error: "Failed to update MarkDistribution" });
+    } 
+};
+ 

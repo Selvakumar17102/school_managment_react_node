@@ -1,12 +1,12 @@
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
-import BasicTableMarkDistribution from "../../components/tables/BasicTables/BasicTableMarkDistribution";
+import BasicTableLeaveAssign from "../../components/tables/BasicTables/BasicTableLeaveAssign.tsx";
 import { useState,useEffect } from "react";
 import { Link,useLocation  } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 
 
-export default function MarkDistribution() {
+export default function LeaveAssign() {
 
     const location = useLocation();
     const [successMessage, setSuccessMessage] = useState("");
@@ -22,7 +22,7 @@ export default function MarkDistribution() {
 
   return (
     <>
-      <PageBreadcrumb pageTitle="Mark Distribution" />
+      <PageBreadcrumb pageTitle="Leave Assign" />
 
       <div className="space-y-6">
         {successMessage && (
@@ -30,17 +30,17 @@ export default function MarkDistribution() {
             ✅ {successMessage}
           </div>
         )}
-        <ComponentCard title="All Mark Distribution Table">
+        <ComponentCard title="All Leave Assign Table">
         <div className="flex justify-between items-center mb-4">
             <Link
-                to="/addMarkDistribution"
+                to="/addleaveassign"
                 className="text-sm text-primary-600 font-medium hover:underline flex items-center gap-1"
                 >
                 <FaPlus className="text-base" />
-                Add a Mark Distribution
+                Add a Leave Assign
             </Link>
         </div>
-          <BasicTableMarkDistribution />
+          <BasicTableLeaveAssign />
         </ComponentCard>
       </div>
     </>

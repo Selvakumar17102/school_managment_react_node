@@ -98,10 +98,14 @@ import Mark from "./pages/Mark/Mark";
 import AddMark from "./pages/Mark/AddMark";
 import ViewMarkDetail from "./pages/Mark/ViewMarkDetail";
 import MarkDistribution from "./pages/Mark/MarkDistribution";
+import AddMarkDistribution from "./pages/Mark/AddMarkDistribution";
 
+import Promotion from "./pages/Mark/Promotion.tsx";
 
 import LeaveCategory from "./pages/Leave/LeaveCategory";
 import AddLeaveCategory from "./pages/Leave/AddLeaveCategory";
+import LeaveAssign from "./pages/Leave/LeaveAssign";
+import AddLeaveAssign from "./pages/Leave/AddLeaveAssign";
 
 export default function App() {
   return (
@@ -236,13 +240,20 @@ export default function App() {
             <Route path="/mark" element={<Mark />} />
             <Route path="/add-mark" element={<AddMark />} />
             <Route path="/viewMarkDetails/:id" element={<ViewMarkDetail />} />
+
             <Route path="/markdistribution" element={<MarkDistribution />} />
+            <Route path="/addMarkDistribution" element={<AddMarkDistribution />} />
+            <Route path="/editmarkdistribution/:id" element={<AddMarkDistribution />} />
+            <Route path="/promotion" element={<Promotion />} />
 
 
             <Route path="/leave-category" element={<LeaveCategory />} />
             <Route path="/addLeaveCategory" element={<AddLeaveCategory />} />
             <Route path="/editleavecategory/:id" element={<AddLeaveCategory />} />
 
+            <Route path="/leaveassign" element={<LeaveAssign />} />
+            <Route path="/addleaveassign" element={<AddLeaveAssign />} />
+            <Route path="/editleaveassign/:id" element={<AddLeaveAssign />} />
 
             
             <Route path="/blank" element={<Blank />} />
